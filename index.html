@@ -377,11 +377,11 @@
   /* Bottom bar */
   .bottom-bar {
     background: white;
-    padding: 12px 16px;
+    padding: 10px 12px;
     box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
     position: sticky; bottom: 0;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
   }
   .btn-skip-day {
@@ -399,12 +399,28 @@
   }
   .btn-skip-day:hover { opacity: 0.9; transform: translateY(-1px); }
   .btn-skip-day:active { transform: scale(0.97); }
+  .btn-skip-all {
+    flex: 1;
+    background: linear-gradient(135deg, #f97316, #dc2626);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 13px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-skip-all:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-skip-all:active { transform: scale(0.97); }
   .slot-indicator {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-soft);
     text-align: center;
     white-space: nowrap;
+    min-width: 52px;
   }
 
   /* ---- POPUP ---- */
@@ -848,7 +864,7 @@
     <strong>Merhaba! 👋</strong><br><br>
     Tıp sınavın 10 gün sonra. Notlarını yüksek tutmalı, enerjini korumali, 
     Mert ile güzel vakit geçirmeli ve <strong>mutlu</strong> olmayı unutmamalısın! 
-    Her günde 8 zaman dilimin var.<br><br>
+    Her günde 9 zaman dilimin var.<br><br>
     <strong>Haydi başlayalım! ✨</strong>
   </div>
   <button class="btn-start" onclick="startGame()">🎮 Oynamaya Başla</button>
@@ -906,8 +922,9 @@
 
   <!-- Bottom bar -->
   <div class="bottom-bar">
-    <div class="slot-indicator" id="slot-indicator">Slot: 1 / 8</div>
+    <div class="slot-indicator" id="slot-indicator">Slot: 1 / 9</div>
     <button class="btn-skip-day" onclick="skipDay()">⏭️ Günü Bitir</button>
+    <button class="btn-skip-all" onclick="confirmSkipAll()">🚀 10 Günü Bitir</button>
   </div>
 </div>
 
@@ -990,7 +1007,8 @@
 // GAME CONFIG - Data-driven activity system
 // ============================================================
 
-const TIMES = ['08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'];
+const TIMES = ['10:00','12:00','14:00','16:00','18:00','20:00','22:00','00:00','02:00'];
+const TOTAL_SLOTS = 9;
 
 const STATS_INITIAL = {
   not: 70,
@@ -1027,10 +1045,13 @@ const ACTIVITIES = [
     colorClass: 'acc-blue',
     imageEmoji: '🎓',
     bubbles: ['Derse dikkat ettim! 📝','Hoca çok önemli şeyler anlattı!','Not aldım, iyi gitti. ✏️'],
+    oncePerDay: true,
+    blockedReason: 'Bugün zaten okula gittin! 🏫',
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
-      return h >= 8 && h <= 14;
-    }
+      return h >= 10 && h <= 14;
+    },
+    conditionReason: 'Okul saatleri sadece 10:00–14:00 arası! 📚'
   },
   {
     id: 'ders',
@@ -1075,7 +1096,10 @@ const ACTIVITIES = [
     colorClass: 'acc-pink',
     imageEmoji: '💕',
     bubbles: ["Mert ile vakit geçirmek harika! 🌹","En güzel mola buydu. 💑","Mert'i görmek her şeye değer! 🌸"],
-    condition: (state) => state.slot < 6
+    oncePerDay: true,
+    blockedReason: "Bugün Mert'le zaten buluştun! ❤️",
+    condition: (state) => state.slot < 6,
+    conditionReason: 'Geç saatte buluşmak zor, yarın! 🌙'
   },
   {
     id: 'arkadaslar',
@@ -1087,7 +1111,10 @@ const ACTIVITIES = [
     colorClass: 'acc-yellow',
     imageEmoji: '🧋',
     bubbles: ['Arkadaşlarım çok iyi! 🥰','Güldük, konuştuk harika oldu!','Onları görmek güzel hissettirdi. 🌸'],
-    condition: (state) => state.slot < 6
+    oncePerDay: true,
+    blockedReason: 'Bugün arkadaşlarınla zaten görüştün! 👯‍♀️',
+    condition: (state) => state.slot < 6,
+    conditionReason: 'Bu saatte arkadaşlar dağıldı bile! 🌙'
   },
   {
     id: 'kahve',
@@ -1123,8 +1150,9 @@ const ACTIVITIES = [
     bubbles: ["The Boys çok iyi! 🙈","Beyin dinlendirme modu aktif!","Bir bölüm daha izlesem mi... 😅"],
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
-      return h >= 18;
-    }
+      return h >= 18 || h <= 2;
+    },
+    conditionReason: 'Dizi vakti akşam başlar! 🌆'
   },
   {
     id: 'pilates',
@@ -1135,7 +1163,9 @@ const ACTIVITIES = [
     chibiState: 'sport',
     colorClass: 'acc-green',
     imageEmoji: '🌿',
-    bubbles: ['Pilates muhteşem hissettiriyor! 🌟','Spor sonrası zihin daha net.','Vücudum teşekkür ediyor! 💪']
+    bubbles: ['Pilates muhteşem hissettiriyor! 🌟','Spor sonrası zihin daha net.','Vücudum teşekkür ediyor! 💪'],
+    oncePerDay: true,
+    blockedReason: 'Bugün sporu zaten yaptın! 🧘‍♀️'
   },
   {
     id: 'uyu',
@@ -1149,21 +1179,24 @@ const ACTIVITIES = [
     bubbles: ['İyi bir uyku her şeyi düzeltiyor... 💤','Zzzz... 🌙','Dinlendim, hazırım! ✨'],
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
-      return h >= 20 || h < 10;
+      return h >= 20 || h <= 2;
     },
+    conditionReason: 'Henüz uyku vakti değil! ☀️',
     fullWidth: true
   }
 ];
 
 // ---- CHIBI STATES ----
+// Fotoğraflar images/ klasöründen yükleniyor.
+// Dosya yoksa otomatik olarak emoji fallback gösterilir.
 const CHIBI_STATES = {
-  default: '👩‍⚕️',
-  study: '👩‍💻',
-  sport: '🏃‍♀️',
-  tired: '😴',
-  happy: '😄',
-  mert: '🥰',
-  celebrate: '🎉'
+  default:   { img: 'images/sude_default.png',   emoji: '👩‍⚕️' },
+  study:     { img: 'images/sude_study.png',     emoji: '👩‍💻' },
+  sport:     { img: 'images/sude_sport.png',     emoji: '🏃‍♀️' },
+  tired:     { img: 'images/sude_tired.png',     emoji: '😴'   },
+  happy:     { img: 'images/sude_happy.png',     emoji: '😄'   },
+  mert:      { img: 'images/sude_mert.png',      emoji: '🥰'   },
+  celebrate: { img: 'images/sude_celebrate.png', emoji: '🎉'   }
 };
 
 // ---- CHIBI BUBBLES: gün bazlı dinamik idle mesajlar ----
@@ -1391,8 +1424,9 @@ let state = {
 function renderGame() {
   // Day + time labels
   document.getElementById('day-label').textContent = `📅 Gün ${state.day} / 10`;
-  document.getElementById('time-label').textContent = `🕐 ${TIMES[state.slot] || '22:00'}`;
-  document.getElementById('slot-indicator').textContent = `Slot: ${state.slot + 1} / 8`;
+  const timeStr = TIMES[state.slot] || TIMES[TOTAL_SLOTS - 1];
+  document.getElementById('time-label').textContent = `🕐 ${timeStr}`;
+  document.getElementById('slot-indicator').textContent = `Slot: ${state.slot + 1} / ${TOTAL_SLOTS}`;
 
   // Stats
   const stats = state.stats;
@@ -1414,15 +1448,20 @@ function renderActivities() {
     const available = isActivityAvailable(act);
     const card = document.createElement('div');
 
-    // Uyu tek satır (fullWidth)
     if (act.fullWidth) {
       card.className = `activity-card ${act.colorClass} full-width${available ? '' : ' disabled'}`;
     } else {
       card.className = `activity-card ${act.colorClass}${available ? '' : ' disabled'}`;
     }
-    card.onclick = available ? () => doActivity(act) : null;
 
-    // Efekt göstergesi: sadece renk dot (yeşil=pozitif, kırmızı=negatif) — sayı yok
+    if (available) {
+      card.onclick = () => doActivity(act);
+    } else {
+      // Disabled: tıklayınca sebebi göster
+      card.onclick = () => showBlockedReason(act);
+    }
+
+    // Efekt dots: sadece renk, sayı yok
     const previewFx = act.baseEffects;
     const dots = Object.entries(previewFx).map(([k, v]) => {
       if (k === 'iliski') return '';
@@ -1440,11 +1479,35 @@ function renderActivities() {
   });
 }
 
+function showBlockedReason(act) {
+  const reason = getBlockReason(act);
+  if (!reason) return;
+
+  const html = `
+    <span class="popup-emoji">🚫</span>
+    <div class="popup-title">${act.icon} ${act.name}</div>
+    <div class="popup-body">${reason}</div>
+    <button class="btn-popup-ok" onclick="closePopup(true)">Tamam</button>
+  `;
+  // closePopup(true) = kapat ama slot ilerletme
+  openPopup(html, '', null);
+}
+
 function isActivityAvailable(act) {
   if (act.oneTime && state.usedOneTime.has(act.id)) return false;
+  if (act.oncePerDay && state.dayActivities.includes(act.id)) return false;
   if (act.condition && !act.condition(state)) return false;
   if (state.stats.enerji <= 5 && act.id !== 'uyu') return false;
   return true;
+}
+
+// Neden tıklanamıyor — popup mesajı için
+function getBlockReason(act) {
+  if (act.oneTime && state.usedOneTime.has(act.id)) return 'Bu aktiviteyi zaten yaptın! ✅';
+  if (act.oncePerDay && state.dayActivities.includes(act.id)) return act.blockedReason || 'Bugün zaten yaptın! ✅';
+  if (act.condition && !act.condition(state)) return act.conditionReason || 'Şu an bu aktivite mevcut değil.';
+  if (state.stats.enerji <= 5 && act.id !== 'uyu') return 'Enerji bitti! Önce biraz uyu. 😴';
+  return null;
 }
 
 // ============================================================
@@ -1486,7 +1549,18 @@ function applyEffects(effects, clamp = true) {
 function updateChibi(chibiState, bubble) {
   const avatar = document.getElementById('chibi-avatar');
   const bub = document.getElementById('chibi-bubble');
-  avatar.textContent = CHIBI_STATES[chibiState] || CHIBI_STATES.default;
+  const stateData = CHIBI_STATES[chibiState] || CHIBI_STATES.default;
+
+  // Fotoğraf varsa <img>, yoksa emoji fallback
+  const img = new Image();
+  img.onload = () => {
+    avatar.innerHTML = `<img src="${stateData.img}" alt="Sude">`;
+  };
+  img.onerror = () => {
+    avatar.textContent = stateData.emoji;
+  };
+  img.src = stateData.img;
+
   bub.textContent = bubble || getIdleBubble();
 }
 
@@ -1561,12 +1635,12 @@ function openPopup(html, extraClass, onClose) {
   requestAnimationFrame(() => { box.style.animation = ''; });
 }
 
-function closePopup() {
+function closePopup(noCallback) {
   const overlay = document.getElementById('popup-overlay');
   overlay.className = 'popup-overlay';
   const cb = popupCallback;
   popupCallback = null;
-  if (cb) cb();
+  if (!noCallback && cb) cb();
 }
 
 // ============================================================
@@ -1586,7 +1660,7 @@ function advanceSlot() {
 }
 
 function advanceSlotInner() {
-  if (state.slot >= 8) {
+  if (state.slot >= TOTAL_SLOTS) {
     endDay();
     return;
   }
@@ -1691,13 +1765,96 @@ function endDay() {
 }
 
 function skipDay() {
-  if (state.slot >= 8) return;
+  if (state.slot >= TOTAL_SLOTS) return;
+  const remaining = TOTAL_SLOTS - state.slot;
+  autoPlaySlots(remaining, () => {});
+}
 
-  const remaining = 8 - state.slot;
-  // Auto-play remaining slots with random activities
-  autoPlaySlots(remaining, () => {
-    // Already handled in endDay chain
+// Onay popup'ı göster
+function confirmSkipAll() {
+  const html = `
+    <span class="popup-emoji">🚀</span>
+    <div class="popup-title">10 Günü Bitir?</div>
+    <div class="popup-body">Kalan tüm günler otomatik oynanacak. Sadece Mert'ten gelen mesajlar gösterilecek. Emin misin?</div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <button class="btn-popup-ok" style="background:linear-gradient(135deg,#f97316,#dc2626)" onclick="closePopup(true);skipAllDays()">🚀 Evet, Bitir!</button>
+      <button class="btn-popup-ok" style="background:#e5e7eb;color:#374151" onclick="closePopup(true)">Geri Dön</button>
+    </div>
+  `;
+  openPopup(html, '', null);
+}
+
+// Tüm kalan günleri auto-play et, sadece Mert popupları göster
+function skipAllDays() {
+  // Mevcut gün + kalan günleri sil
+  const totalSlotsLeft = (TOTAL_SLOTS - state.slot) + (10 - state.day) * TOTAL_SLOTS;
+  autoPlayAllSlots(totalSlotsLeft);
+}
+
+function autoPlayAllSlots(n) {
+  if (n <= 0) {
+    // Tüm günler bitti, finale geç
+    if (state.day <= 10) {
+      applyNotDecay();
+      const entry = generateDiaryEntry();
+      state.diary.push({ day: state.day, text: entry });
+    }
+    startFinal();
+    return;
+  }
+
+  // Auto-play one slot
+  const available = ACTIVITIES.filter(a => isActivityAvailable(a));
+  const weights = available.map(a => {
+    if (a.id === 'uyu' && state.stats.enerji < 30) return 5;
+    if (a.id === 'ders') return 3;
+    if (a.id === 'okul') return 2;
+    return 1;
   });
+  const totalW = weights.reduce((s, w) => s + w, 0);
+  let r = Math.random() * totalW;
+  let chosen = available[0];
+  for (let i = 0; i < available.length; i++) {
+    r -= weights[i];
+    if (r <= 0) { chosen = available[i]; break; }
+  }
+
+  if (chosen) {
+    if (chosen.oneTime) state.usedOneTime.add(chosen.id);
+    const fx = computeEffects(chosen);
+    applyEffects(fx);
+    state.dayActivities.push(chosen.id);
+  }
+
+  state.slot++;
+
+  // Gün bitti mi?
+  if (state.slot >= TOTAL_SLOTS) {
+    applyNotDecay();
+    const entry = generateDiaryEntry();
+    state.diary.push({ day: state.day, text: entry });
+    state.day++;
+    state.slot = 0;
+    state.dayActivities = [];
+
+    if (state.day > 10) {
+      startFinal();
+      return;
+    }
+  }
+
+  // Mert popup şansı: %30 (sadece gün başında, bir kez)
+  const isMertMoment = state.mertPopupLastDay !== state.day && state.slot === 1 && Math.random() < 0.30;
+  if (isMertMoment) {
+    state.mertPopupLastDay = state.day;
+    showMertPopup(() => {
+      renderGame();
+      setTimeout(() => autoPlayAllSlots(n - 1), 50);
+    });
+    return;
+  }
+
+  setTimeout(() => autoPlayAllSlots(n - 1), 30);
 }
 
 function autoPlaySlots(n, cb) {
@@ -1729,7 +1886,7 @@ function autoPlaySlots(n, cb) {
   }
 
   state.slot++;
-  if (state.slot >= 8) {
+  if (state.slot >= TOTAL_SLOTS) {
     endDay();
   } else {
     setTimeout(() => autoPlaySlots(n - 1, cb), 80);
