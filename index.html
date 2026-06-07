@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sude'nin Sınav Öncesi 10 Günü 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #f9a8d4;
+    --pink-light: #fce7f3;
+    --pink-deep: #ec4899;
+    --lavender: #c4b5fd;
+    --lavender-light: #ede9fe;
+    --lavender-deep: #7c3aed;
+    --peach: #fed7aa;
+    --peach-deep: #f97316;
+    --mint: #a7f3d0;
+    --mint-deep: #10b981;
+    --sky: #bae6fd;
+    --yellow: #fef08a;
+    --red: #fca5a5;
+    --red-deep: #ef4444;
+    --text: #3b1f2b;
+    --text-soft: #7c5470;
+    --bg: #fff5fb;
+    --card: #ffffff;
+    --shadow: 0 4px 20px rgba(236,72,153,0.12);
+    --shadow-lg: 0 8px 40px rgba(236,72,153,0.18);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---- SCREENS ---- */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ---- TITLE SCREEN ---- */
+  #screen-title {
+    background: linear-gradient(160deg, #fce7f3 0%, #ede9fe 50%, #dbeafe 100%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  #screen-title::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(249,168,212,0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(196,181,253,0.4) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .title-floats {
+    position: absolute; inset: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .float-emoji {
+    position: absolute;
+    font-size: 1.8rem;
+    animation: floatUp 6s infinite linear;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+  }
+  .title-chibi {
+    font-size: 6rem;
+    margin-bottom: 16px;
+    animation: bounceSoft 2s ease-in-out infinite;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  @keyframes bounceSoft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .title-h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--pink-deep);
+    line-height: 1.2;
+    position: relative; z-index: 1;
+    text-shadow: 0 2px 8px rgba(236,72,153,0.2);
+  }
+  .title-sub {
+    margin-top: 8px;
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-weight: 600;
+    position: relative; z-index: 1;
+  }
+  .title-story {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 24px 0;
+    box-shadow: var(--shadow);
+    position: relative; z-index: 1;
+    max-width: 380px;
+    width: 100%;
+    text-align: left;
+    line-height: 1.7;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+  .title-story strong { color: var(--pink-deep); }
+  .btn-start {
+    background: linear-gradient(135deg, var(--pink-deep), var(--lavender-deep));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(236,72,153,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; z-index: 1;
+    letter-spacing: 0.5px;
+  }
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(236,72,153,0.45); }
+  .btn-start:active { transform: translateY(0); }
+
+  /* ---- GAME SCREEN ---- */
+  #screen-game {
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--bg);
+  }
+
+  /* Top header */
+  .game-header {
+    background: white;
+    padding: 12px 16px 10px;
+    box-shadow: 0 2px 12px rgba(236,72,153,0.1);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-row1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .day-badge {
+    background: linear-gradient(135deg, var(--pink-deep), #be185d);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    font-family: 'Nunito', sans-serif;
+  }
+  .time-badge {
+    background: var(--lavender-light);
+    color: var(--lavender-deep);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .btn-diary-open {
+    background: var(--pink-light);
+    color: var(--pink-deep);
+    border: none;
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-diary-open:hover { background: var(--pink); }
+
+  /* Stats bar */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .stat-label { font-size: 0.6rem; font-weight: 700; color: var(--text-soft); }
+  .stat-bar-wrap {
+    width: 100%;
+    height: 6px;
+    background: #f0e6ef;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .stat-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .stat-val { font-size: 0.65rem; font-weight: 800; color: var(--text); }
+  .bar-not { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+  .bar-mutluluk { background: linear-gradient(90deg, var(--pink), var(--pink-deep)); }
+  .bar-iliski { background: linear-gradient(90deg, #f472b6, #ec4899); }
+  .bar-enerji { background: linear-gradient(90deg, var(--mint), var(--mint-deep)); }
+  .bar-endise { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+
+  /* Chibi area */
+  .chibi-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px 8px;
+  }
+  /*
+   * 📸 FOTOĞRAF SİSTEMİ - Sude'nin görselini değiştirmek için:
+   *
+   * 1. HTML yöntemi (önerilen - localhost veya GitHub Pages):
+   *    - Fotoğrafı projeye ekle, örn: images/sude.jpg
+   *    - Aşağıdaki chibi-display içindeki emoji'yi <img> ile değiştir:
+   *      <div id="chibi-avatar"><img src="images/sude.jpg" alt="Sude"></div>
+   *
+   * 2. GitHub Pages yöntemi:
+   *    - Repo'ya images/ klasörü ekle, fotoğrafları oraya yükle
+   *    - index.html'deki id="chibi-avatar" elementine img tag'i koy
+   *    - URL: https://kullanici.github.io/repo-adi/images/sude.jpg
+   *
+   * 3. Aktivite bazlı değişen görseller için:
+   *    - JS'te CHIBI_STATES objesinde emoji yerine <img> HTML koy
+   *    - updateChibi() fonksiyonunda innerHTML kullanılıyor,
+   *      textContent'i innerHTML olarak değiştir (zaten innerHTML'e geçilebilir)
+   *
+   * Şu an: emoji placeholder kullanılıyor (state bazlı değişiyor)
+   */
+  .chibi-display {
+    font-size: 4.5rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+  /* Fotoğraf kullanıldığında otomatik ölçeklenir */
+  .chibi-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .chibi-bubble {
+    background: white;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+    flex: 1;
+    position: relative;
+    font-weight: 600;
+  }
+  .chibi-bubble::before {
+    content: '';
+    position: absolute;
+    left: -8px; top: 50%;
+    transform: translateY(-50%);
+    border: 8px solid transparent;
+    border-right-color: white;
+  }
+
+  /* Activity section */
+  .section-title {
+    padding: 8px 16px 4px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 6px 16px 16px;
+  }
+  .activity-card {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 14px 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .activity-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 12px 12px 0 0;
+    background: var(--card-accent, var(--pink));
+    opacity: 0.7;
+  }
+  .activity-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .activity-card:active { transform: scale(0.97); }
+  .activity-card.disabled { opacity: 0.4; cursor: not-allowed; }
+  .activity-icon { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+  .activity-name {
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .activity-effects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  /* Efekt tag'leri - sadece renk, sayı yok */
+  .effect-tag {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+  /* Aktivite kartlarındaki efekt dots */
+  .effect-dot {
+    font-size: 0.75rem;
+    padding: 2px 5px;
+    border-radius: 20px;
+    display: inline-block;
+    line-height: 1.4;
+  }
+  .dot-pos { background: #dcfce7; }
+  .dot-neg { background: #fee2e2; }
+  .effect-pos { background: #dcfce7; color: #166534; }
+  .effect-neg { background: #fee2e2; color: #991b1b; }
+  .effect-neu { background: #f3f4f6; color: #6b7280; }
+
+  /* Tam genişlik kart (Uyu) */
+  .activity-card.full-width {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+  .activity-card.full-width .activity-icon { margin-bottom: 0; font-size: 1.5rem; }
+  .activity-card.full-width .activity-name { margin-bottom: 0; }
+
+  /* Bottom bar */
+  .bottom-bar {
+    background: white;
+    padding: 12px 16px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+    position: sticky; bottom: 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .btn-skip-day {
+    flex: 1;
+    background: linear-gradient(135deg, var(--lavender), var(--lavender-deep));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 13px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-skip-day:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-skip-day:active { transform: scale(0.97); }
+  .slot-indicator {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* ---- POPUP ---- */
+  .popup-overlay {
+    position: fixed; inset: 0;
+    background: rgba(59,31,43,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .popup-overlay.active { display: flex; }
+  .popup-box {
+    background: white;
+    border-radius: 24px;
+    padding: 28px 24px;
+    max-width: 340px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .popup-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+  .popup-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+  }
+  .popup-body {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .popup-effects {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .popup-effect-tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+  .popup-img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
+  .popup-img-emoji {
+    font-size: 4rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .btn-popup-ok {
+    background: linear-gradient(135deg, var(--pink-deep), var(--lavender-deep));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 36px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s;
+  }
+  .btn-popup-ok:hover { opacity: 0.9; }
+
+  /* Mert popup special */
+  .mert-popup .popup-box {
+    background: linear-gradient(160deg, #fce7f3, #ede9fe);
+    border: 2px solid var(--pink);
+  }
+  .mert-popup .popup-title { color: #be185d; }
+
+  /* Hearts animation */
+  .hearts-container {
+    position: fixed; inset: 0; pointer-events: none; z-index: 300;
+    overflow: hidden;
+  }
+  .heart-fly {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: heartFly 1.5s ease-out forwards;
+  }
+  @keyframes heartFly {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+  }
+
+  /* Stat flash */
+  .stat-flash {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-chip {
+    background: white;
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow);
+    animation: chipFloat 1.5s ease-out forwards;
+  }
+  @keyframes chipFloat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-60px); opacity: 0; }
+  }
+
+  /* Day Summary Popup */
+  .summary-popup .popup-box { max-width: 380px; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 12px 0 16px;
+    text-align: left;
+  }
+  .summary-item {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  .summary-item-label { font-size: 0.7rem; color: var(--text-soft); font-weight: 600; }
+  .summary-item-val { font-size: 1rem; font-weight: 800; color: var(--text); }
+  .diary-entry-preview {
+    background: linear-gradient(135deg, #fce7f3, #ede9fe);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    text-align: left;
+    font-style: italic;
+  }
+
+  /* ---- DIARY SCREEN ---- */
+  #screen-diary {
+    background: var(--bg);
+    flex-direction: column;
+  }
+  .diary-header {
+    background: white;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-back {
+    background: var(--pink-light);
+    color: var(--pink-deep);
+    border: none;
+    border-radius: 50%;
+    width: 38px; height: 38px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .btn-back:hover { background: var(--pink); }
+  .diary-header h2 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    color: var(--pink-deep);
+    font-size: 1.2rem;
+  }
+  .diary-entries {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .diary-entry-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--pink);
+  }
+  .diary-day-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--pink-deep);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .diary-text {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .diary-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+
+  /* ---- FINAL SCREEN ---- */
+  #screen-final {
+    background: linear-gradient(160deg, #fce7f3 0%, #ede9fe 40%, #dbeafe 100%);
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    overflow-y: auto;
+  }
+  .final-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px 60px;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .final-chibi { font-size: 5rem; animation: bounceSoft 2s infinite; margin-bottom: 12px; }
+  .final-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+  }
+  .final-subtitle { color: var(--text-soft); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.6; }
+
+  /* Score counter */
+  .score-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 20px;
+  }
+  .score-label { font-size: 0.8rem; font-weight: 700; color: var(--text-soft); margin-bottom: 4px; }
+  .score-number {
+    font-family: 'Nunito', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--pink-deep);
+    line-height: 1;
+    transition: all 0.1s;
+  }
+  .score-suffix { font-size: 1.5rem; font-weight: 700; color: var(--lavender-deep); }
+  .score-verdict {
+    background: linear-gradient(135deg, var(--mint-deep), #059669);
+    color: white;
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-weight: 800;
+    margin-top: 12px;
+    display: inline-block;
+    font-size: 0.9rem;
+  }
+
+  /* Final stats */
+  .final-stats {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    width: 100%;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .final-stats h3 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 14px;
+    font-size: 1rem;
+  }
+  .final-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .final-stat-label { font-size: 0.8rem; font-weight: 700; color: var(--text-soft); width: 70px; flex-shrink: 0; }
+  .final-stat-bar-wrap { flex: 1; height: 10px; background: #f0e6ef; border-radius: 10px; overflow: hidden; }
+  .final-stat-bar { height: 100%; border-radius: 10px; transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .final-stat-val { font-size: 0.8rem; font-weight: 800; width: 30px; text-align: right; }
+
+  /* Gift box */
+  .gift-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .gift-box {
+    font-size: 4rem;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.3s;
+    animation: giftPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes giftPulse {
+    0%, 100% { transform: scale(1) rotate(-3deg); }
+    50% { transform: scale(1.1) rotate(3deg); }
+  }
+  .gift-box:hover { transform: scale(1.2) rotate(5deg) !important; animation: none; }
+  .gift-text { font-size: 0.85rem; color: var(--text-soft); margin-top: 8px; font-weight: 600; }
+  .gift-revealed {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .gift-revealed.show { display: flex; }
+  .btn-workshop {
+    background: linear-gradient(135deg, var(--pink-deep), var(--lavender-deep));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 6px 20px rgba(236,72,153,0.3);
+    transition: transform 0.2s;
+    margin-top: 8px;
+  }
+  .btn-workshop:hover { transform: translateY(-2px); }
+
+  /* Last message */
+  .final-message {
+    background: linear-gradient(135deg, #fce7f3, #ede9fe);
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .final-message strong { color: var(--pink-deep); }
+
+  /* ---- CONFETTI ---- */
+  .confetti-wrap {
+    position: fixed; inset: 0; pointer-events: none; z-index: 400; overflow: hidden;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    opacity: 0;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+  }
+
+  /* ---- BIRTHDAY POPUP ---- */
+  .birthday-popup .popup-box {
+    background: linear-gradient(160deg, #fef9c3, #fce7f3, #ede9fe);
+    border: 2px solid var(--yellow);
+  }
+  .birthday-popup .popup-title { color: #92400e; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 4px; }
+
+  /* Activity card color accents */
+  .acc-blue { --card-accent: #60a5fa; }
+  .acc-pink { --card-accent: var(--pink-deep); }
+  .acc-green { --card-accent: var(--mint-deep); }
+  .acc-purple { --card-accent: var(--lavender-deep); }
+  .acc-orange { --card-accent: #f97316; }
+  .acc-yellow { --card-accent: #f59e0b; }
+  .acc-red { --card-accent: #ef4444; }
+  .acc-teal { --card-accent: #14b8a6; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: var(--text);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    z-index: 600;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- TITLE SCREEN -->
+<div id="screen-title" class="screen active">
+  <div class="title-floats" id="title-floats"></div>
+  <span class="title-chibi">👩‍⚕️</span>
+  <h1 class="title-h1">Sude'nin<br>Sınav Öncesi<br>10 Günü</h1>
+  <p class="title-sub">🌸 Cozy Life Simulator</p>
+  <div class="title-story">
+    <strong>Merhaba! 👋</strong><br><br>
+    Tıp sınavın 10 gün sonra. Notlarını yüksek tutmalı, enerjini korumali, 
+    Mert ile güzel vakit geçirmeli ve <strong>mutlu</strong> olmayı unutmamalısın! 
+    Her günde 8 zaman dilimin var.<br><br>
+    <strong>Haydi başlayalım! ✨</strong>
+  </div>
+  <button class="btn-start" onclick="startGame()">🎮 Oynamaya Başla</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="screen-game" class="screen">
+  <!-- Header -->
+  <div class="game-header">
+    <div class="header-row1">
+      <div class="day-badge" id="day-label">📅 Gün 1 / 10</div>
+      <div class="time-badge" id="time-label">🕗 08:00</div>
+      <button class="btn-diary-open" onclick="showDiary()">📓 Günlük</button>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-label">📚 Not</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-not" id="bar-not" style="width:70%"></div></div>
+        <div class="stat-val" id="val-not">70</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">😊 Mutluluk</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-mutluluk" id="bar-mutluluk" style="width:70%"></div></div>
+        <div class="stat-val" id="val-mutluluk">70</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">❤️ İlişki</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-iliski" id="bar-iliski" style="width:100%"></div></div>
+        <div class="stat-val" id="val-iliski">100</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">⚡ Enerji</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-enerji" id="bar-enerji" style="width:80%"></div></div>
+        <div class="stat-val" id="val-enerji">80</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">😰 Endişe</div>
+        <div class="stat-bar-wrap"><div class="stat-bar bar-endise" id="bar-endise" style="width:20%"></div></div>
+        <div class="stat-val" id="val-endise">20</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chibi area -->
+  <div class="chibi-area">
+    <div class="chibi-display" id="chibi-avatar">👩‍⚕️</div>
+    <div class="chibi-bubble" id="chibi-bubble">Bugün ne yapalım? 🌸</div>
+  </div>
+
+  <!-- Activities -->
+  <div class="section-title">Ne yapalım?</div>
+  <div class="activities-grid" id="activities-grid">
+    <!-- Dynamically rendered -->
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="slot-indicator" id="slot-indicator">Slot: 1 / 8</div>
+    <button class="btn-skip-day" onclick="skipDay()">⏭️ Günü Bitir</button>
+  </div>
+</div>
+
+<!-- DIARY SCREEN -->
+<div id="screen-diary" class="screen">
+  <div class="diary-header">
+    <button class="btn-back" onclick="closeDiary()">←</button>
+    <h2>📓 Sude'nin Günlüğü</h2>
+  </div>
+  <div class="diary-entries" id="diary-entries">
+    <div class="diary-empty">
+      <div style="font-size:3rem;margin-bottom:12px">📖</div>
+      Henüz günlük girişi yok.<br>Bir gün geçirince buraya yazılacak!
+    </div>
+  </div>
+</div>
+
+<!-- FINAL SCREEN -->
+<div id="screen-final" class="screen">
+  <div class="final-inner">
+    <div class="final-chibi" id="final-chibi">🎓</div>
+    <h1 class="final-title">Sınavı Geçtin! 🎉</h1>
+    <p class="final-subtitle">10 günlük zorlu süreç bitti.<br>Çok iyi iş çıkardın, Sude! 🌸</p>
+
+    <div class="score-card">
+      <div class="score-label">Sınav Notu</div>
+      <div>
+        <span class="score-number" id="final-score">0</span>
+        <span class="score-suffix">/100</span>
+      </div>
+      <div class="score-verdict" id="final-verdict">Mükemmel! ✨</div>
+    </div>
+
+    <div class="final-stats" id="final-stats-section">
+      <h3>📊 Final Raporu</h3>
+      <!-- Filled by JS -->
+    </div>
+
+    <div class="gift-section" id="gift-section">
+      <div id="gift-box-area">
+        <div class="gift-box" id="gift-box" onclick="revealGift()">🎁</div>
+        <div class="gift-text">Sana bir sürprizim var! Tıkla! 🎀</div>
+      </div>
+      <div class="gift-revealed" id="gift-revealed">
+        <div style="font-size:2.5rem">🎊</div>
+        <div style="font-weight:800;color:var(--pink-deep);font-size:1rem">Sürpriz açıldı!</div>
+        <div style="font-size:0.85rem;color:var(--text-soft);margin-top:4px">Tatil başlıyor... ✈️</div>
+        <a href="https://workshop.example.com" class="btn-workshop" target="_blank">🌟 Workshop Linki</a>
+      </div>
+    </div>
+
+    <div class="final-message">
+      ✈️ <strong>Artık tatile hazırsın!</strong><br><br>
+      10 gün boyunca derslerini ihmal etmedin, 
+      Mert'le güzel vakit geçirdin ve 
+      enerjini korudun.<br><br>
+      <strong>Hayırlı tatiller! ❤️</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Popups -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-box" id="popup-box">
+    <!-- Filled dynamically -->
+  </div>
+</div>
+
+<!-- Hearts container -->
+<div class="hearts-container" id="hearts-container"></div>
+<!-- Confetti container -->
+<div class="confetti-wrap" id="confetti-wrap"></div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<!-- Stat flash container -->
+<div id="stat-flash-container"></div>
+
+<script>
+// ============================================================
+// GAME CONFIG - Data-driven activity system
+// ============================================================
+
+const TIMES = ['08:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00'];
+
+const STATS_INITIAL = {
+  not: 70,
+  mutluluk: 70,
+  iliski: 100,
+  enerji: 80,
+  endise: 20
+};
+
+const STAT_LABELS = {
+  not: '📚 Not',
+  mutluluk: '😊 Mutluluk',
+  iliski: '❤️ İlişki',
+  enerji: '⚡ Enerji',
+  endise: '😰 Endişe'
+};
+
+// ---- ACTIVITIES CONFIG ----
+// effects here are BASE values. Actual values are computed dynamically by computeEffects().
+// Endise logic: ders/okul = azalır; facetime = biraz azalır; diğer zaman harcayan = artar (çünkü çalışma zamanı gidiyor)
+// "endiseDelta" = activite bazlı net endişe değişimi. Ek olarak her aktivitede gün bazlı passive endişe eklenir.
+//
+// 🔧 DEĞER AYARLAMAK İÇİN: aşağıdaki baseEffects objelerini düzenle.
+// Dinamik ölçekleme mantığını değiştirmek için: computeEffects() fonksiyonunu düzenle.
+const ACTIVITIES = [
+  // Sıra: okul, ders, altkatayin, facetime, bulus, arkadaslar, kahve, cips, theboys, pilates — en sonda uyu tek
+  {
+    id: 'okul',
+    name: 'Okula Git',
+    icon: '🏫',
+    description: "Derse katıl, hoca dinle.",
+    baseEffects: { not: +12, enerji: -12, endise: -4 },
+    chibiState: 'study',
+    colorClass: 'acc-blue',
+    imageEmoji: '🎓',
+    bubbles: ['Derse dikkat ettim! 📝','Hoca çok önemli şeyler anlattı!','Not aldım, iyi gitti. ✏️'],
+    condition: (state) => {
+      const h = parseInt(TIMES[state.slot].split(':')[0]);
+      return h >= 8 && h <= 14;
+    }
+  },
+  {
+    id: 'ders',
+    name: 'Ders Çalış',
+    icon: '📚',
+    description: 'Notları gözden geçir, konuları çalış.',
+    baseEffects: { not: +8, enerji: -10, endise: -3 },
+    chibiState: 'study',
+    colorClass: 'acc-blue',
+    imageEmoji: '📖',
+    bubbles: ['Hadi çalışalım! 💪','Odaklanmak lazım...','Konsantre oldum, iyi gidiyor! 📚','Az kaldı, devam!']
+  },
+  {
+    id: 'altkatayin',
+    name: 'Alt Kata İn',
+    icon: '🏠',
+    description: 'Biraz sosyalleş, aile ile zaman geç.',
+    baseEffects: { mutluluk: +5, enerji: +3, endise: +2 },
+    chibiState: 'happy',
+    colorClass: 'acc-orange',
+    imageEmoji: '🏡',
+    bubbles: ['Eve inmek tatlı geldi! 🏡','Aileyle güzel vakit geçirdik.','Çay içtik, muhabbet ettik. ☕']
+  },
+  {
+    id: 'facetime',
+    name: "Mert'le FaceTime",
+    icon: '📱',
+    description: "Mert ile video görüşme yap.",
+    baseEffects: { mutluluk: +10, enerji: +5, endise: -4 },
+    chibiState: 'mert',
+    colorClass: 'acc-pink',
+    imageEmoji: '❤️',
+    bubbles: ["Mert'i görmek iyi geldi! ❤️","Mert çok tatlıydı bugün 🥰","Konuşmak rahatlatıcıydı! 💕","Mert'siz olmazdı bu süreç ❤️"]
+  },
+  {
+    id: 'bulus',
+    name: "Mert ile Buluş",
+    icon: '💑',
+    description: "Mert ile dışarı çık, vakit geçir.",
+    baseEffects: { mutluluk: +15, enerji: -8, endise: +3 },
+    chibiState: 'mert',
+    colorClass: 'acc-pink',
+    imageEmoji: '💕',
+    bubbles: ["Mert ile vakit geçirmek harika! 🌹","En güzel mola buydu. 💑","Mert'i görmek her şeye değer! 🌸"],
+    condition: (state) => state.slot < 6
+  },
+  {
+    id: 'arkadaslar',
+    name: 'Arkadaşlarla Buluş',
+    icon: '👯‍♀️',
+    description: 'Kampüste arkadaşlarla görüş.',
+    baseEffects: { mutluluk: +12, enerji: -6, endise: +3 },
+    chibiState: 'happy',
+    colorClass: 'acc-yellow',
+    imageEmoji: '🧋',
+    bubbles: ['Arkadaşlarım çok iyi! 🥰','Güldük, konuştuk harika oldu!','Onları görmek güzel hissettirdi. 🌸'],
+    condition: (state) => state.slot < 6
+  },
+  {
+    id: 'kahve',
+    name: 'Kahve / Cola Zero',
+    icon: '☕',
+    description: 'Kafein takviyesi, konsantrasyon artışı!',
+    baseEffects: { enerji: +8, endise: +4 },
+    chibiState: 'happy',
+    colorClass: 'acc-orange',
+    imageEmoji: '☕',
+    bubbles: ['Kafein girdi, hazırım! ⚡','Cola Zero mis gibi! 🥤','Bu kahve olmadan olmaz.','Kafein = motivasyon 🙃']
+  },
+  {
+    id: 'cips',
+    name: 'Cips Ye',
+    icon: '🍟',
+    description: 'Hak ettin, küçük bir ödül!',
+    baseEffects: { mutluluk: +8, endise: +3 },
+    chibiState: 'happy',
+    colorClass: 'acc-yellow',
+    imageEmoji: '🍿',
+    bubbles: ['Cips olmasa olmaz. 🍟','Küçük bir ödül kendine. 🥳','Crunch crunch... Harika! 😋']
+  },
+  {
+    id: 'theboys',
+    name: 'The Boys İzle',
+    icon: '📺',
+    description: 'Hak ettin, biraz dizi zamanı!',
+    baseEffects: { mutluluk: +12, enerji: -5, endise: +4 },
+    chibiState: 'happy',
+    colorClass: 'acc-red',
+    imageEmoji: '🎬',
+    bubbles: ["The Boys çok iyi! 🙈","Beyin dinlendirme modu aktif!","Bir bölüm daha izlesem mi... 😅"],
+    condition: (state) => {
+      const h = parseInt(TIMES[state.slot].split(':')[0]);
+      return h >= 18;
+    }
+  },
+  {
+    id: 'pilates',
+    name: 'Pilates / Padel',
+    icon: '🧘‍♀️',
+    description: 'Egzersiz yap, zihin ve bedeni dinlendir.',
+    baseEffects: { enerji: +15, mutluluk: +8, endise: +2 },
+    chibiState: 'sport',
+    colorClass: 'acc-green',
+    imageEmoji: '🌿',
+    bubbles: ['Pilates muhteşem hissettiriyor! 🌟','Spor sonrası zihin daha net.','Vücudum teşekkür ediyor! 💪']
+  },
+  {
+    id: 'uyu',
+    name: 'Uyu / Dinlen',
+    icon: '😴',
+    description: "Güzel bir uyku çek.",
+    baseEffects: { enerji: +20, endise: -8 },
+    chibiState: 'tired',
+    colorClass: 'acc-purple',
+    imageEmoji: '🌙',
+    bubbles: ['İyi bir uyku her şeyi düzeltiyor... 💤','Zzzz... 🌙','Dinlendim, hazırım! ✨'],
+    condition: (state) => {
+      const h = parseInt(TIMES[state.slot].split(':')[0]);
+      return h >= 20 || h < 10;
+    },
+    fullWidth: true
+  }
+];
+
+// ---- CHIBI STATES ----
+const CHIBI_STATES = {
+  default: '👩‍⚕️',
+  study: '👩‍💻',
+  sport: '🏃‍♀️',
+  tired: '😴',
+  happy: '😄',
+  mert: '🥰',
+  celebrate: '🎉'
+};
+
+// ---- CHIBI BUBBLES: gün bazlı dinamik idle mesajlar ----
+// Gün 1-3: rahat, motive; Gün 4-7: orta; Gün 8-10: gerilim
+const BUBBLES_BY_PHASE = {
+  early: [ // Gün 1-3
+    "Bugün ne yapalım? 🌸",
+    "Hadi verimli bir gün geçirelim! ✨",
+    "Motive olmaya hazırım! 💪",
+    "Yeni bir gün, yeni fırsatlar! 🌅",
+    "10 gün yeter de artar! 😊"
+  ],
+  mid: [ // Gün 4-7
+    "Sınav yaklaşıyor... ama hallederim! 🌿",
+    "Biraz yoruldum ama devam! 💪",
+    "Başarabilirim, dayanalım! 🌸",
+    "Hala zamanım var, paniklemeyeyim. ✨",
+    "Kafam biraz dağınık ama odaklanacağım. 📚"
+  ],
+  late: [ // Gün 8-10
+    "Son düzlük! Yapabilirim! 🔥",
+    "Dayanalım, az kaldı... 🌟",
+    "Sınav çok yakın, son sprint! 💨",
+    "Bu günleri de geçireceğim! 💪",
+    "Neredeyse bitti, bırakmıyorum! 🎯"
+  ]
+};
+
+function getIdleBubble() {
+  const d = state ? state.day : 1;
+  const phase = d <= 3 ? 'early' : d <= 7 ? 'mid' : 'late';
+  const list = BUBBLES_BY_PHASE[phase];
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+// ---- RANDOM EVENTS CONFIG ----
+const RANDOM_EVENTS = {
+  birthday: {
+    day: 2, slot: 0,
+    title: '🎂 Doğum Günün Kutlu Olsun!',
+    emoji: '🎉',
+    body: "Bugün doğum günün! Mert çiçek gönderdi, arkadaşların sürpriz yaptı. Hayatının en güzel günlerinden biri! 🌹💐",
+    effects: { mutluluk: +25, endise: -10 },
+    mertMessage: "Doğum günün kutlu olsun aşkım! En güzel günlerin hep önünde ❤️🎂"
+  }
+};
+
+const MERT_MESSAGES = [
+  { msg: "Bugün çok çalıştın ❤️", emoji: "💪" },
+  { msg: "Bir kahve molası? ☕", emoji: "☕" },
+  { msg: "Sana inanıyorum ✨", emoji: "✨" },
+  { msg: "Az kaldı, yapabilirsin! 🌟", emoji: "🌟" },
+  { msg: "Seni çok seviyorum 💕", emoji: "💕" },
+  { msg: "Bu akşam konuşalım mı? 🌙", emoji: "📱" },
+  { msg: "Harikasin sen, bil bakalım 🥰", emoji: "🥰" }
+];
+
+const TURKEY_MATCHES = [3, 7]; // days (1-indexed)
+
+// ---- DIARY TEMPLATES ----
+const DIARY_TEMPLATES = {
+  ders: [
+    "Bugün biraz kafayı yaktım ama not aldım tabii. 📚",
+    "Ders çalışmak yorucu ama değer! 💪",
+    "Saatlerce çalıştım, kafam dumanlandı biraz."
+  ],
+  facetime: [
+    "Mert'le uzun uzun konuştuk, çok iyi geldi. 📱❤️",
+    "Facetime sona erince eksik hissettim açıkçası. 🥺",
+    "Mert'i görmek endişemi bir anda aldı gitti."
+  ],
+  bulus: [
+    "Mert'le harika bir gün geçirdik! En güzel molalardan biri. 💑",
+    "Mert'i görmek tüm yorgunluğumu aldı. ❤️",
+    "Beraber vakit geçirmek bu günleri daha güzel yapıyor."
+  ],
+  pilates: [
+    "Pilates sonrası zihin daha net! Vücudum teşekkür ediyor. 🧘‍♀️",
+    "Hareket etmek bazen en iyi ilaç.",
+    "Spordan sonra her şey daha hafif hissettirdi."
+  ],
+  okul: [
+    "Derse dikkatli katıldım, hoca bazı önemli noktalar anlattı. 📝",
+    "Okul koridorlarında yürümek güzel hissettirdi.",
+    "Kampüste olmak motive etti beni bugün."
+  ],
+  uyu: [
+    "Biraz uzandım, yeniden şarj oldum. 💤",
+    "İyi uyku her şeyin başı.",
+    "Dinlendim, yarına hazırım."
+  ],
+  theboys: [
+    "The Boys muhteşem! Beyin dinlendirme moduna geçtim. 📺😂",
+    "Dizi sonrası çok daha iyi hissediyorum.",
+    "Molanın hakkını verdim bugün. 🙈"
+  ],
+  arkadaslar: [
+    "Arkadaşlarımla güldük, konuştuk. Sosyal olmak da önemli! 🧋",
+    "Onları görmek iyi geldi, enerji yüklendim.",
+    "Bir süre de olsa stresi attık beraber."
+  ],
+  altkatayin: [
+    "Aileyle biraz vakit geçirdim, güzel oldu. 🏡",
+    "Biraz aşağı inmek kafayı dağıttı.",
+    "Ailem moral verdi bugün, iyi geldi."
+  ],
+  kahve: [
+    "Kahve/cola zero olmasa bugün bitiremezdim. ☕",
+    "Kafein takviyesi şart bu günlerde! 🥤",
+    "Bir Cola Zero ile her şey daha iyi."
+  ],
+  cips: [
+    "Küçük ödüllerle hayat daha güzel. 🍟",
+    "Cips yerken bir an her şeyi unuttum. 😋",
+    "Snack molaları da önemli tabii. 🍿"
+  ],
+  kedi: [
+    "Kampüste bir kedi sürprizi yaşadım! 🐾😸",
+    "Kedicik tam da ihtiyacım olduğu an geldi."
+  ],
+  default: [
+    "Sıradan ama güzel bir gündü. 🌸",
+    "Bugün de geçti, yarın yeni bir başlangıç. ✨",
+    "Adım adım ilerleyip bitireceğim bunu."
+  ]
+};
+
+// ============================================================
+// DYNAMIC EFFECTS ENGINE
+// ============================================================
+// 🔧 AYARLAMA REHBERİ:
+//   - Gün bazlı not bonusu: NOT_STUDY_SCALE tablosunu düzenle
+//   - Endişe passive artış: ENDISE_PASSIVE_PER_SLOT'u düzenle
+//   - Endişe aktivite çarpanı: endiseMultiplier'ı düzenle
+//
+// Not ölçekleme: erken günlerde daha yüksek kazanım, son günlerde azalan getiri
+const NOT_STUDY_SCALE = {
+  // gün -> { chance: kazanım ihtimali (0-1), bonus: ekstra not }
+  // Örnek: gün 1-3 = %50 ihtimalle +2 bonus; gün 8-10 = %20 ihtimalle +1 bonus
+  1: { chance: 0.50, bonus: 2 },
+  2: { chance: 0.50, bonus: 2 },
+  3: { chance: 0.45, bonus: 2 },
+  4: { chance: 0.40, bonus: 1 },
+  5: { chance: 0.35, bonus: 1 },
+  6: { chance: 0.30, bonus: 1 },
+  7: { chance: 0.25, bonus: 1 },
+  8: { chance: 0.20, bonus: 1 },
+  9: { chance: 0.20, bonus: 1 },
+  10:{ chance: 0.20, bonus: 1 },
+};
+
+// Her slot'ta passive endişe artışı (gün ilerledikçe artar)
+const ENDISE_PASSIVE_PER_SLOT = {
+  1: 0.5, 2: 0.5, 3: 0.8,
+  4: 1.0, 5: 1.0, 6: 1.2,
+  7: 1.5, 8: 1.8, 9: 2.0, 10: 2.0
+};
+
+function computeEffects(act) {
+  // Başlangıç: baseEffects kopyası
+  const fx = { ...act.baseEffects };
+  const d = state.day;
+
+  // --- NOT: ders/okul için dinamik scaling ---
+  if ((act.id === 'ders' || act.id === 'okul') && fx.not) {
+    const scale = NOT_STUDY_SCALE[d] || { chance: 0.20, bonus: 1 };
+    if (Math.random() < scale.chance) {
+      fx.not += scale.bonus;
+    }
+  }
+
+  // --- ENDİŞE: passive gün artışı ---
+  // Her aktivitede bir passive endise eklenir (ders/okul hariç — onlar zaten negatif endişe veriyor)
+  const passiveEndise = ENDISE_PASSIVE_PER_SLOT[d] || 1.0;
+
+  if (act.id === 'ders' || act.id === 'okul') {
+    // Çalışmak endişeyi azaltıyor — passive artışa karşı koyuyor, kendi baseEffect'i geçerli
+    // Passive'i ekleme, baseEffect yeterli
+  } else if (act.id === 'facetime') {
+    // Facetime biraz azaltıyor ama tam değil — passive'in yarısını uygula
+    fx.endise = (fx.endise || 0) + passiveEndise * 0.4;
+  } else if (act.id === 'uyu') {
+    // Uyku endişeyi iyi azaltıyor — passive ekleme
+  } else {
+    // Diğer tüm aktiviteler: zamanı harcıyorsun, endişe artar
+    fx.endise = (fx.endise || 0) + passiveEndise;
+  }
+
+  // Değerleri tam sayıya yuvarla
+  Object.keys(fx).forEach(k => { fx[k] = Math.round(fx[k]); });
+
+  return fx;
+}
+
+// Not passive düşüş: ders/okul yapılmadığı günlerde %50 ihtimalle 2 puan düşer
+// Bu endDay() sonunda çağrılır
+function applyNotDecay() {
+  const studyDone = state.dayActivities.some(id => id === 'ders' || id === 'okul');
+  if (!studyDone && Math.random() < 0.50) {
+    // Soft floor 80 hala geçerli
+    state.stats.not = Math.max(80, state.stats.not - 2);
+  }
+}
+
+// ============================================================
+// GAME STATE
+// ============================================================
+let state = {
+  day: 1,
+  slot: 0,
+  stats: { ...STATS_INITIAL },
+  diary: [],
+  usedOneTime: new Set(),
+  dayActivities: [],    // activities done this day
+  birthdayTriggered: false,
+  kediEventTriggered: false,   // kedi artık gün 5 popup eventi
+  turkeyMatchShown: new Set(),
+  mertPopupLastDay: -1,
+  gameOver: false
+};
+
+// ============================================================
+// RENDERER
+// ============================================================
+function renderGame() {
+  // Day + time labels
+  document.getElementById('day-label').textContent = `📅 Gün ${state.day} / 10`;
+  document.getElementById('time-label').textContent = `🕐 ${TIMES[state.slot] || '22:00'}`;
+  document.getElementById('slot-indicator').textContent = `Slot: ${state.slot + 1} / 8`;
+
+  // Stats
+  const stats = state.stats;
+  ['not','mutluluk','iliski','enerji','endise'].forEach(k => {
+    const val = Math.round(Math.max(0, Math.min(100, stats[k])));
+    document.getElementById(`bar-${k}`).style.width = val + '%';
+    document.getElementById(`val-${k}`).textContent = val;
+  });
+
+  // Activities
+  renderActivities();
+}
+
+function renderActivities() {
+  const grid = document.getElementById('activities-grid');
+  grid.innerHTML = '';
+
+  ACTIVITIES.forEach(act => {
+    const available = isActivityAvailable(act);
+    const card = document.createElement('div');
+
+    // Uyu tek satır (fullWidth)
+    if (act.fullWidth) {
+      card.className = `activity-card ${act.colorClass} full-width${available ? '' : ' disabled'}`;
+    } else {
+      card.className = `activity-card ${act.colorClass}${available ? '' : ' disabled'}`;
+    }
+    card.onclick = available ? () => doActivity(act) : null;
+
+    // Efekt göstergesi: sadece renk dot (yeşil=pozitif, kırmızı=negatif) — sayı yok
+    const previewFx = act.baseEffects;
+    const dots = Object.entries(previewFx).map(([k, v]) => {
+      if (k === 'iliski') return '';
+      const emoji = k === 'not' ? '📚' : k === 'mutluluk' ? '😊' : k === 'enerji' ? '⚡' : '😰';
+      const cls = v > 0 ? 'dot-pos' : 'dot-neg';
+      return `<span class="effect-dot ${cls}">${emoji}</span>`;
+    }).join('');
+
+    card.innerHTML = `
+      <span class="activity-icon">${act.icon}</span>
+      <div class="activity-name">${act.name}</div>
+      <div class="activity-effects">${dots}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function isActivityAvailable(act) {
+  if (act.oneTime && state.usedOneTime.has(act.id)) return false;
+  if (act.condition && !act.condition(state)) return false;
+  if (state.stats.enerji <= 5 && act.id !== 'uyu') return false;
+  return true;
+}
+
+// ============================================================
+// ACTIVITY LOGIC
+// ============================================================
+function doActivity(act) {
+  if (state.gameOver) return;
+
+  // Mark one-time
+  if (act.oneTime) state.usedOneTime.add(act.id);
+
+  // Compute dynamic effects for this turn
+  const computedFx = computeEffects(act);
+  applyEffects(computedFx);
+
+  // Track day activity
+  state.dayActivities.push(act.id);
+
+  // Pick random bubble from activity's bubble list
+  const bubble = act.bubbles[Math.floor(Math.random() * act.bubbles.length)];
+  updateChibi(act.chibiState, bubble);
+
+  // Show activity popup
+  showActivityPopup(act, computedFx);
+}
+
+function applyEffects(effects, clamp = true) {
+  Object.entries(effects).forEach(([k, v]) => {
+    if (k === 'iliski') return; // iliski is always 100
+    state.stats[k] = Math.max(0, Math.min(100, state.stats[k] + v));
+  });
+
+  // Soft floor: not never below 80
+  if (state.stats.not < 80) state.stats.not = 80;
+
+  renderGame();
+}
+
+function updateChibi(chibiState, bubble) {
+  const avatar = document.getElementById('chibi-avatar');
+  const bub = document.getElementById('chibi-bubble');
+  avatar.textContent = CHIBI_STATES[chibiState] || CHIBI_STATES.default;
+  bub.textContent = bubble || getIdleBubble();
+}
+
+// ============================================================
+// POPUP SYSTEM
+// ============================================================
+let popupQueue = [];
+let popupCallback = null;
+
+function showActivityPopup(act, effects, onClose) {
+  // Popup efekt tags: emoji + yeşil/kırmızı arka plan, sayı yok
+  const effectHtml = Object.entries(effects).map(([k, v]) => {
+    if (k === 'iliski') return '';
+    const cls = v > 0 ? 'effect-pos' : 'effect-neg';
+    const label = STAT_LABELS[k] || k;
+    return `<span class="popup-effect-tag ${cls}">${label}</span>`;
+  }).join('');
+
+  const imgHtml = act.imageEmoji
+    ? `<span class="popup-img-emoji">${act.imageEmoji}</span>`
+    : '';
+
+  const html = `
+    ${imgHtml}
+    <div class="popup-title">${act.icon} ${act.name}</div>
+    <div class="popup-body">${act.description}</div>
+    <div class="popup-effects">${effectHtml}</div>
+    <button class="btn-popup-ok" onclick="closePopup()">Devam ✨</button>
+  `;
+
+  openPopup(html, '', onClose || (() => advanceSlot()));
+
+  // Hearts for mert activities
+  if (act.id === 'facetime' || act.id === 'bulus') {
+    spawnHearts();
+  }
+  // Stat flash: sayıları flash'ta göster (çünkü orada kısa süre görünüyor, informative)
+  showStatFlash(effects);
+}
+
+function showGenericPopup(emoji, title, body, effectsObj, extraHtml, onClose, extraClass) {
+  const effectHtml = effectsObj ? Object.entries(effectsObj).map(([k, v]) => {
+    const cls = v > 0 ? 'effect-pos' : 'effect-neg';
+    const sign = v > 0 ? '+' : '';
+    const label = STAT_LABELS[k] || k;
+    return `<span class="popup-effect-tag ${cls}">${label} ${sign}${v}</span>`;
+  }).join('') : '';
+
+  const html = `
+    <span class="popup-emoji">${emoji}</span>
+    <div class="popup-title">${title}</div>
+    <div class="popup-body">${body}</div>
+    ${effectsObj ? `<div class="popup-effects">${effectHtml}</div>` : ''}
+    ${extraHtml || ''}
+    <button class="btn-popup-ok" onclick="closePopup()">Harika! 🌟</button>
+  `;
+
+  const overlay = document.getElementById('popup-overlay');
+  if (extraClass) overlay.classList.add(extraClass);
+  openPopup(html, extraClass, onClose);
+  if (effectsObj) showStatFlash(effectsObj);
+}
+
+function openPopup(html, extraClass, onClose) {
+  const overlay = document.getElementById('popup-overlay');
+  const box = document.getElementById('popup-box');
+  overlay.className = 'popup-overlay active';
+  if (extraClass) overlay.classList.add(extraClass);
+  box.innerHTML = html;
+  popupCallback = onClose;
+  box.style.animation = 'none';
+  requestAnimationFrame(() => { box.style.animation = ''; });
+}
+
+function closePopup() {
+  const overlay = document.getElementById('popup-overlay');
+  overlay.className = 'popup-overlay';
+  const cb = popupCallback;
+  popupCallback = null;
+  if (cb) cb();
+}
+
+// ============================================================
+// SLOT & DAY MANAGEMENT
+// ============================================================
+function advanceSlot() {
+  state.slot++;
+
+  // Random Mert popup check (20% chance, once per day)
+  if (state.mertPopupLastDay !== state.day && Math.random() < 0.2) {
+    state.mertPopupLastDay = state.day;
+    setTimeout(() => showMertPopup(advanceSlotInner), 300);
+    return;
+  }
+
+  advanceSlotInner();
+}
+
+function advanceSlotInner() {
+  if (state.slot >= 8) {
+    endDay();
+    return;
+  }
+
+  // Check for special events
+  checkSpecialEvents();
+  renderGame();
+}
+
+function checkSpecialEvents() {
+  // Birthday: Day 2, Slot 0 (start of day)
+  if (state.day === 2 && state.slot === 0 && !state.birthdayTriggered) {
+    state.birthdayTriggered = true;
+    const ev = RANDOM_EVENTS.birthday;
+    setTimeout(() => {
+      applyEffects(ev.effects);
+      triggerConfetti();
+      showGenericPopup(
+        ev.emoji, ev.title, ev.body, ev.effects,
+        `<div class="diary-entry-preview" style="margin-bottom:12px">"${ev.mertMessage}"</div>`,
+        () => renderGame(),
+        'birthday-popup'
+      );
+    }, 400);
+  }
+
+  // 🐱 Kedi eventi: Gün 5, slot 2'de popup olarak gelir (artık aktivite değil)
+  if (state.day === 5 && state.slot === 2 && !state.kediEventTriggered) {
+    state.kediEventTriggered = true;
+    setTimeout(() => {
+      applyEffects({ mutluluk: +10, endise: -5 });
+      showGenericPopup(
+        '🐱', 'Kampüste Kedi Sürprizi!',
+        'Fakülteye giderken minik bir kedi sana sürtündü! Bir süre sevildi, mırladı. Hayatın küçük güzellikleri... 🐾',
+        { mutluluk: +10, endise: -5 },
+        null,
+        () => renderGame(),
+        ''
+      );
+    }, 400);
+  }
+
+  // Turkey match
+  if (TURKEY_MATCHES.includes(state.day) && !state.turkeyMatchShown.has(state.day) && state.slot === 4) {
+    state.turkeyMatchShown.add(state.day);
+    setTimeout(() => {
+      applyEffects({ mutluluk: +15 });
+      showGenericPopup(
+        '⚽', '🇹🇷 Türkiye Maçı!',
+        'Türkiye maçı oynuyor! Beraber izleyip bağırdınız, müthiş bir gol! Türkiye kazandı! 🎉🏆',
+        { mutluluk: +15 },
+        null,
+        () => renderGame()
+      );
+    }, 400);
+  }
+}
+
+function showMertPopup(onClose) {
+  const m = MERT_MESSAGES[Math.floor(Math.random() * MERT_MESSAGES.length)];
+  const effects = { mutluluk: +5, endise: -3 };
+  applyEffects(effects);
+  spawnHearts();
+
+  const html = `
+    <span class="popup-emoji">❤️</span>
+    <div class="popup-title">Mert diyor ki:</div>
+    <div class="popup-body" style="font-size:1.1rem;font-weight:700;color:#be185d">"${m.msg}"</div>
+    <div class="popup-effects">
+      <span class="popup-effect-tag effect-pos">😊 Mutluluk +5</span>
+      <span class="popup-effect-tag effect-pos">😰 Endişe -3</span>
+    </div>
+    <button class="btn-popup-ok" onclick="closePopup()">💕 Teşekkürler</button>
+  `;
+  openPopup(html, 'mert-popup', onClose);
+}
+
+function endDay() {
+  // Not passive düşüş: ders/okul yapılmadıysa %50 şansla 2 puan azal
+  applyNotDecay();
+
+  // Generate diary entry
+  const entry = generateDiaryEntry();
+  state.diary.push({ day: state.day, text: entry });
+
+  // Show day summary popup
+  showDaySummary(entry, () => {
+    state.day++;
+    state.slot = 0;
+    state.dayActivities = [];
+
+    if (state.day > 10) {
+      startFinal();
+      return;
+    }
+
+    // Check beginning-of-day events
+    checkSpecialEvents();
+    updateChibi('default', getIdleBubble());
+    renderGame();
+  });
+}
+
+function skipDay() {
+  if (state.slot >= 8) return;
+
+  const remaining = 8 - state.slot;
+  // Auto-play remaining slots with random activities
+  autoPlaySlots(remaining, () => {
+    // Already handled in endDay chain
+  });
+}
+
+function autoPlaySlots(n, cb) {
+  if (n <= 0) { endDay(); return; }
+
+  // Pick a valid activity randomly (with weights)
+  const available = ACTIVITIES.filter(a => isActivityAvailable(a));
+  const weights = available.map(a => {
+    if (a.id === 'uyu' && state.stats.enerji < 30) return 5;
+    if (a.id === 'ders') return 3;
+    if (a.id === 'okul') return 2;
+    return 1;
+  });
+  const totalW = weights.reduce((s, w) => s + w, 0);
+  let r = Math.random() * totalW;
+  let chosen = available[0];
+  for (let i = 0; i < available.length; i++) {
+    r -= weights[i];
+    if (r <= 0) { chosen = available[i]; break; }
+  }
+
+  if (chosen) {
+    if (chosen.oneTime) state.usedOneTime.add(chosen.id);
+    const fx = computeEffects(chosen);
+    applyEffects(fx);
+    state.dayActivities.push(chosen.id);
+    const bubble = chosen.bubbles[Math.floor(Math.random() * chosen.bubbles.length)];
+    updateChibi(chosen.chibiState, bubble);
+  }
+
+  state.slot++;
+  if (state.slot >= 8) {
+    endDay();
+  } else {
+    setTimeout(() => autoPlaySlots(n - 1, cb), 80);
+  }
+}
+
+function showDaySummary(entry, onClose) {
+  const s = state.stats;
+  const html = `
+    <div class="popup-title">🌙 Gün ${state.day} Bitti!</div>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-item-label">📚 Not</div>
+        <div class="summary-item-val">${Math.round(s.not)}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-item-label">😊 Mutluluk</div>
+        <div class="summary-item-val">${Math.round(s.mutluluk)}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-item-label">⚡ Enerji</div>
+        <div class="summary-item-val">${Math.round(s.enerji)}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-item-label">😰 Endişe</div>
+        <div class="summary-item-val">${Math.round(s.endise)}</div>
+      </div>
+    </div>
+    <div class="diary-entry-preview">"${entry}"</div>
+    <button class="btn-popup-ok" onclick="closePopup()">
+      ${state.day >= 10 ? '🎓 Sonucu Gör!' : '☀️ Ertesi Gün →'}
+    </button>
+  `;
+  openPopup(html, '', onClose);
+}
+
+function generateDiaryEntry() {
+  const acts = state.dayActivities;
+  for (const key of ['bulus','facetime','pilates','okul','ders','theboys','arkadaslar','kahve','cips','uyu','altkatayin']) {
+    if (acts.includes(key) && DIARY_TEMPLATES[key]) {
+      const opts = DIARY_TEMPLATES[key];
+      return opts[Math.floor(Math.random() * opts.length)];
+    }
+  }
+  // Kedi eventi oldu mu bu gün?
+  if (state.day === 5 && state.kediEventTriggered && DIARY_TEMPLATES.kedi) {
+    const opts = DIARY_TEMPLATES.kedi;
+    return opts[Math.floor(Math.random() * opts.length)];
+  }
+  const def = DIARY_TEMPLATES.default;
+  return def[Math.floor(Math.random() * def.length)];
+}
+
+// ============================================================
+// DIARY SCREEN
+// ============================================================
+function showDiary() {
+  document.getElementById('screen-game').classList.remove('active');
+  document.getElementById('screen-diary').classList.add('active');
+
+  const container = document.getElementById('diary-entries');
+  if (state.diary.length === 0) {
+    container.innerHTML = `<div class="diary-empty"><div style="font-size:3rem;margin-bottom:12px">📖</div>Henüz günlük girişi yok.<br>Bir gün geçirince buraya yazılacak!</div>`;
+    return;
+  }
+
+  container.innerHTML = state.diary.map(d => `
+    <div class="diary-entry-card">
+      <div class="diary-day-label">Gün ${d.day}</div>
+      <div class="diary-text">"${d.text}"</div>
+    </div>
+  `).reverse().join('');
+}
+
+function closeDiary() {
+  document.getElementById('screen-diary').classList.remove('active');
+  document.getElementById('screen-game').classList.add('active');
+}
+
+// ============================================================
+// FINAL SCREEN
+// ============================================================
+function startFinal() {
+  state.gameOver = true;
+
+  // Boost stats for finale
+  state.stats.endise = Math.max(5, state.stats.endise - 20);
+  state.stats.mutluluk = Math.min(100, state.stats.mutluluk + 10);
+  state.stats.not = Math.min(100, state.stats.not + 5);
+
+  showScreen('screen-final');
+  triggerConfetti();
+
+  // Animate score counter
+  const targetScore = Math.round(state.stats.not * 0.7 + state.stats.mutluluk * 0.1 + (100 - state.stats.endise) * 0.2);
+  const clampedScore = Math.max(85, Math.min(98, targetScore));
+
+  animateCounter(document.getElementById('final-score'), 0, clampedScore, 2000);
+
+  // Verdict
+  setTimeout(() => {
+    const verdict = clampedScore >= 95 ? 'Pekiyi! 🏆' :
+                    clampedScore >= 90 ? 'Çok İyi! ✨' : 'İyi! 🌟';
+    document.getElementById('final-verdict').textContent = verdict;
+  }, 2100);
+
+  // Final stats
+  renderFinalStats();
+}
+
+function renderFinalStats() {
+  const section = document.getElementById('final-stats-section');
+  const s = state.stats;
+  const rows = [
+    { label: '📚 Not', val: s.not, barClass: 'bar-not' },
+    { label: '😊 Mutluluk', val: s.mutluluk, barClass: 'bar-mutluluk' },
+    { label: '❤️ İlişki', val: s.iliski, barClass: 'bar-iliski' },
+    { label: '⚡ Enerji', val: s.enerji, barClass: 'bar-enerji' },
+    { label: '😰 Endişe', val: s.endise, barClass: 'bar-endise' }
+  ];
+
+  section.innerHTML = `<h3>📊 Final Raporu</h3>` + rows.map(r => `
+    <div class="final-stat-row">
+      <div class="final-stat-label">${r.label}</div>
+      <div class="final-stat-bar-wrap">
+        <div class="final-stat-bar ${r.barClass}" style="width:0%" data-target="${Math.round(r.val)}"></div>
+      </div>
+      <div class="final-stat-val">${Math.round(r.val)}</div>
+    </div>
+  `).join('');
+
+  // Animate bars
+  setTimeout(() => {
+    section.querySelectorAll('.final-stat-bar').forEach(bar => {
+      bar.style.width = bar.dataset.target + '%';
+    });
+  }, 500);
+}
+
+function revealGift() {
+  document.getElementById('gift-box-area').style.display = 'none';
+  document.getElementById('gift-revealed').classList.add('show');
+  triggerConfetti();
+  spawnHearts();
+}
+
+function animateCounter(el, from, to, duration) {
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (to - from) * ease);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ============================================================
+// EFFECTS: HEARTS, CONFETTI, STAT FLASH
+// ============================================================
+function spawnHearts() {
+  const container = document.getElementById('hearts-container');
+  const hearts = ['❤️','💕','💗','💖','💓'];
+  for (let i = 0; i < 8; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-fly';
+    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    h.style.left = (20 + Math.random() * 60) + '%';
+    h.style.bottom = '60px';
+    h.style.animationDelay = (Math.random() * 0.5) + 's';
+    container.appendChild(h);
+    setTimeout(() => h.remove(), 2000);
+  }
+}
+
+function triggerConfetti() {
+  const container = document.getElementById('confetti-wrap');
+  const colors = ['#f9a8d4','#c4b5fd','#60a5fa','#a7f3d0','#fef08a','#fca5a5','#f97316'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.left = Math.random() * 100 + '%';
+    c.style.animationDuration = (2 + Math.random() * 3) + 's';
+    c.style.animationDelay = (Math.random() * 2) + 's';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.width = c.style.height = (6 + Math.random() * 8) + 'px';
+    container.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
+}
+
+function showStatFlash(effects) {
+  const container = document.getElementById('stat-flash-container');
+  const wrap = document.createElement('div');
+  wrap.className = 'stat-flash';
+
+  Object.entries(effects).forEach(([k, v]) => {
+    if (v === 0) return;
+    const chip = document.createElement('div');
+    chip.className = 'stat-chip';
+    const sign = v > 0 ? '+' : '';
+    const label = STAT_LABELS[k] || k;
+    chip.textContent = `${label} ${sign}${v}`;
+    chip.style.color = v > 0 ? '#166534' : '#991b1b';
+    chip.style.border = `2px solid ${v > 0 ? '#bbf7d0' : '#fecaca'}`;
+    wrap.appendChild(chip);
+  });
+
+  container.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 1600);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ============================================================
+// SCREEN MANAGEMENT
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ============================================================
+// GAME START
+// ============================================================
+function startGame() {
+  state = {
+    day: 1,
+    slot: 0,
+    stats: { ...STATS_INITIAL },
+    diary: [],
+    usedOneTime: new Set(),
+    dayActivities: [],
+    birthdayTriggered: false,
+    kediEventTriggered: false,
+    turkeyMatchShown: new Set(),
+    mertPopupLastDay: -1,
+    gameOver: false
+  };
+
+  showScreen('screen-game');
+  updateChibi('default', getIdleBubble());
+  renderGame();
+}
+
+// ============================================================
+// TITLE SCREEN FLOATING EMOJIS
+// ============================================================
+function initTitleFloats() {
+  const container = document.getElementById('title-floats');
+  const emojis = ['📚','💊','🩺','❤️','⭐','🌸','🎀','✨','🌟','💕','🫶','🌺'];
+  for (let i = 0; i < 12; i++) {
+    const el = document.createElement('div');
+    el.className = 'float-emoji';
+    el.textContent = emojis[i % emojis.length];
+    el.style.left = (5 + Math.random() * 90) + '%';
+    el.style.animationDuration = (5 + Math.random() * 7) + 's';
+    el.style.animationDelay = (Math.random() * 8) + 's';
+    container.appendChild(el);
+  }
+}
+
+initTitleFloats();
+</script>
+</body>
+</html>
