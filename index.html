@@ -167,7 +167,11 @@
     font-weight: 800;
     font-size: 0.85rem;
     font-family: 'Nunito', sans-serif;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
   }
+  .day-badge:hover { opacity: 0.9; transform: scale(1.03); }
   .time-badge {
     background: var(--lavender-light);
     color: var(--lavender-deep);
@@ -175,7 +179,12 @@
     border-radius: 50px;
     font-weight: 700;
     font-size: 0.85rem;
+    border: none;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    transition: background 0.15s, transform 0.15s;
   }
+  .time-badge:hover { background: var(--lavender); transform: scale(1.03); }
   .btn-diary-open {
     background: var(--pink-light);
     color: var(--pink-deep);
@@ -592,6 +601,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-shrink: 0;
   }
   .btn-back {
     background: var(--pink-light);
@@ -635,17 +645,92 @@
     color: var(--pink-deep);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
-  .diary-text {
-    font-size: 0.88rem;
+  /* Otomatik diary girişi */
+  .diary-auto-entry {
+    font-size: 0.87rem;
     color: var(--text-soft);
     line-height: 1.7;
     font-style: italic;
+    padding: 8px 10px;
+    background: var(--pink-light);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
   }
+  .diary-auto-icon { flex-shrink: 0; }
+  /* Manuel notlar */
+  .diary-manual-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 7px 10px;
+    background: var(--lavender-light);
+    border-radius: 10px;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .diary-note-icon { flex-shrink: 0; font-size: 0.8rem; margin-top: 2px; }
+  .diary-note-text { flex: 1; }
+  .diary-note-delete {
+    background: none; border: none; cursor: pointer;
+    color: #9ca3af; font-size: 1rem; padding: 0 2px;
+    flex-shrink: 0; line-height: 1;
+    transition: color 0.15s;
+  }
+  .diary-note-delete:hover { color: var(--red-deep); }
+  /* Manuel not ekleme alanı */
+  .diary-add-note-area {
+    background: white;
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--lavender-deep);
+  }
+  .diary-add-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--lavender-deep);
+    margin-bottom: 10px;
+  }
+  .diary-textarea {
+    width: 100%;
+    min-height: 72px;
+    border: 1.5px solid var(--lavender);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--lavender-light);
+  }
+  .diary-textarea:focus { border-color: var(--lavender-deep); }
+  .diary-add-btn {
+    margin-top: 8px;
+    background: linear-gradient(135deg, var(--lavender), var(--lavender-deep));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 9px 24px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+  }
+  .diary-add-btn:hover { opacity: 0.9; }
   .diary-empty {
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px 20px;
     color: var(--text-soft);
     font-size: 0.9rem;
   }
@@ -818,6 +903,139 @@
   }
   .birthday-popup .popup-title { color: #92400e; }
 
+  /* ---- PLANNER SCREEN ---- */
+  #screen-planner {
+    background: var(--bg);
+    flex-direction: column;
+  }
+  .planner-header {
+    background: white;
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .planner-header-text { flex: 1; }
+  .planner-header h2 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    color: var(--pink-deep);
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+  .planner-subtitle { font-size: 0.72rem; color: var(--text-soft); font-weight: 600; }
+  .planner-confirm-btn {
+    background: linear-gradient(135deg, var(--mint-deep), #059669);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 14px;
+    font-weight: 800;
+    font-size: 0.78rem;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .planner-confirm-btn:hover { opacity: 0.85; }
+  .planner-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .planner-day-section {
+    background: white;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .planner-day-header {
+    padding: 8px 14px;
+    font-weight: 800;
+    font-size: 0.8rem;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #f3f0f5;
+    background: var(--pink-light);
+    color: var(--pink-deep);
+  }
+  .planner-day-header.past { background: #f3f4f6; color: #6b7280; }
+  .planner-day-header.today { background: linear-gradient(90deg, var(--pink-light), var(--lavender-light)); }
+  .planner-day-header.future { background: var(--lavender-light); color: var(--lavender-deep); }
+  .planner-day-chevron { margin-left: auto; transition: transform 0.2s; font-style: normal; }
+  .planner-day-slots { display: none; }
+  .planner-day-slots.open { display: block; }
+  .planner-slot-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-bottom: 1px solid #fdf0f8;
+    transition: background 0.1s;
+  }
+  .planner-slot-row:last-child { border-bottom: none; }
+  .planner-slot-time {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-soft);
+    width: 42px;
+    flex-shrink: 0;
+  }
+  .planner-slot-content {
+    flex: 1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .planner-slot-done { color: var(--mint-deep); }
+  .planner-slot-planned { color: var(--lavender-deep); }
+  .planner-slot-empty { color: #d1d5db; font-style: italic; }
+  .planner-slot-current {
+    background: linear-gradient(90deg, rgba(249,168,212,0.15), transparent);
+  }
+  /* Future slot: tıklanabilir aktivite seçim */
+  .planner-slot-row.selectable { cursor: pointer; }
+  .planner-slot-row.selectable:hover { background: var(--pink-light); }
+  .planner-slot-row.selected-plan { background: var(--lavender-light); }
+  /* Aktivite seçim mini grid */
+  .planner-act-picker {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    padding: 8px 14px 12px;
+    background: #fdf8ff;
+    border-top: 1px dashed var(--lavender);
+  }
+  .planner-act-chip {
+    background: white;
+    border: 1.5px solid var(--lavender);
+    border-radius: 8px;
+    padding: 5px 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    color: var(--text);
+  }
+  .planner-act-chip:hover { background: var(--lavender-light); border-color: var(--lavender-deep); }
+  .planner-act-chip.chosen { background: var(--lavender-deep); color: white; border-color: var(--lavender-deep); }
+  .planner-act-clear {
+    background: #fee2e2; border-color: var(--red-deep); color: var(--red-deep);
+  }
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -864,7 +1082,7 @@
     <strong>Merhaba! 👋</strong><br><br>
     Tıp sınavın 10 gün sonra. Notlarını yüksek tutmalı, enerjini korumali, 
     Mert ile güzel vakit geçirmeli ve <strong>mutlu</strong> olmayı unutmamalısın! 
-    Her günde 9 zaman dilimin var.<br><br>
+    Her günde 8 zaman dilimin var.<br><br>
     <strong>Haydi başlayalım! ✨</strong>
   </div>
   <button class="btn-start" onclick="startGame()">🎮 Oynamaya Başla</button>
@@ -875,8 +1093,8 @@
   <!-- Header -->
   <div class="game-header">
     <div class="header-row1">
-      <div class="day-badge" id="day-label">📅 Gün 1 / 10</div>
-      <div class="time-badge" id="time-label">🕗 08:00</div>
+      <button class="day-badge" id="day-label" onclick="showPlannerAll()">📅 Gün 1 / 10</button>
+      <button class="time-badge" id="time-label" onclick="showPlannerToday()">🕐 10:00</button>
       <button class="btn-diary-open" onclick="showDiary()">📓 Günlük</button>
     </div>
     <div class="stats-grid">
@@ -939,6 +1157,21 @@
       <div style="font-size:3rem;margin-bottom:12px">📖</div>
       Henüz günlük girişi yok.<br>Bir gün geçirince buraya yazılacak!
     </div>
+  </div>
+</div>
+
+<!-- PLANNER SCREEN -->
+<div id="screen-planner" class="screen">
+  <div class="planner-header">
+    <button class="btn-back" onclick="closePlanner()">←</button>
+    <div class="planner-header-text">
+      <h2 id="planner-title">📅 10 Günlük Plan</h2>
+      <div class="planner-subtitle" id="planner-subtitle">Geçmiş & gelecek slotları gör</div>
+    </div>
+    <button class="planner-confirm-btn" id="planner-confirm-btn" onclick="confirmPlan()" style="display:none">✅ Planı Onayla</button>
+  </div>
+  <div class="planner-body" id="planner-body">
+    <!-- Filled by JS -->
   </div>
 </div>
 
@@ -1233,28 +1466,145 @@ function getIdleBubble() {
 }
 
 // ---- RANDOM EVENTS CONFIG ----
-const RANDOM_EVENTS = {
-  birthday: {
+// Tüm özel eventler burada tanımlanır.
+// type: 'fixed'  → belirli gün ve slot'ta tetiklenir (day, slot zorunlu)
+// type: 'random' → oyun başında rastgele bir gün+slot'a atanır (minDay/maxDay/forbidLastSlot opsiyonel)
+// Yeni bir event eklemek için buraya bir obje ekle ve checkSpecialEvents() otomatik işler.
+//
+// Her event state'de aynı isimle bir "triggered" flag'i tutar: state.triggeredEvents Set'i
+const RANDOM_EVENTS_CONFIG = [
+  // ---- SABİT EVENTler ----
+  {
+    id: 'birthday',
+    type: 'fixed',
     day: 2, slot: 0,
     title: '🎂 Doğum Günün Kutlu Olsun!',
     emoji: '🎉',
     body: "Bugün doğum günün! Mert çiçek gönderdi, arkadaşların sürpriz yaptı. Hayatının en güzel günlerinden biri! 🌹💐",
     effects: { mutluluk: +25, endise: -10 },
-    mertMessage: "Doğum günün kutlu olsun aşkım! En güzel günlerin hep önünde ❤️🎂"
+    extraHtml: (ev) => `<div class="diary-entry-preview" style="margin-bottom:12px">"Doğum günün kutlu olsun aşkım! En güzel günlerin hep önünde ❤️🎂"</div>`,
+    popupClass: 'birthday-popup',
+    onTrigger: () => { triggerConfetti(); }
+  },
+  {
+    id: 'turkey1',
+    type: 'fixed',
+    day: 1, slot: TOTAL_SLOTS - 1,   // Gün 1'in son slotu
+    title: '🇹🇷 Türkiye Maçı!',
+    emoji: '⚽',
+    body: 'Türkiye maçı oynuyor! Beraber izleyip bağırdınız, müthiş bir gol! Türkiye kazandı! 🎉🏆',
+    effects: { mutluluk: +15 },
+    popupClass: ''
+  },
+  {
+    id: 'turkey2',
+    type: 'fixed',
+    day: 8, slot: TOTAL_SLOTS - 1,   // Gün 8'in son slotu
+    title: '🇹🇷 Türkiye Maçı!',
+    emoji: '⚽',
+    body: 'Yine maç var! Gergin bir maçtı ama Türkiye kazandı! Stres atmak için birebir oldu. 🏆🎉',
+    effects: { mutluluk: +15 },
+    popupClass: ''
+  },
+  // ---- RANDOM EVENTler ----
+  {
+    id: 'kedi',
+    type: 'random',
+    minDay: 2, maxDay: 9,           // 2-9. günler arasında herhangi bir yerde
+    title: '🐱 Kampüste Kedi Sürprizi!',
+    emoji: '🐱',
+    body: 'Fakülteye giderken minik bir kedi sana sürtündü! Bir süre sevildi, mırladı. Hayatın küçük güzellikleri... 🐾',
+    effects: { mutluluk: +10, endise: -5 },
+    popupClass: ''
+  },
+  {
+    id: 'ugurbocegi',
+    type: 'random',
+    minDay: 2, maxDay: 9,
+    title: '🐞 Uğur Böceği!',
+    emoji: '🐞',
+    body: 'Pencerenin kenarına bir uğur böceği kondu! Uğurlu sayılır... Belki sınav da iyi geçer! 🍀✨',
+    effects: { mutluluk: +8, endise: -6 },
+    popupClass: ''
   }
-};
-
-const MERT_MESSAGES = [
-  { msg: "Bugün çok çalıştın ❤️", emoji: "💪" },
-  { msg: "Bir kahve molası? ☕", emoji: "☕" },
-  { msg: "Sana inanıyorum ✨", emoji: "✨" },
-  { msg: "Az kaldı, yapabilirsin! 🌟", emoji: "🌟" },
-  { msg: "Seni çok seviyorum 💕", emoji: "💕" },
-  { msg: "Bu akşam konuşalım mı? 🌙", emoji: "📱" },
-  { msg: "Harikasin sen, bil bakalım 🥰", emoji: "🥰" }
+  // 🆕 Yeni bir event eklemek için buraya aynı formatta bir obje ekle!
 ];
 
-const TURKEY_MATCHES = [3, 7]; // days (1-indexed)
+const MERT_MESSAGES = [
+  { msg: "Bugün çok çalıştın ❤️" },
+  { msg: "Bir kahve molası? ☕" },
+  { msg: "Sana inanıyorum ✨" },
+  { msg: "Az kaldı, yapabilirsin! 🌟" },
+  { msg: "Seni çok seviyorum 💕" },
+  { msg: "Bu akşam konuşalım mı? 🌙" },
+  { msg: "Harikasin sen, bil bakalım 🥰" }
+];
+
+// Oyun başında random eventlere slot ata (çakışma olmadan)
+function assignRandomEventSlots() {
+  // Zaten atanmışsa tekrar atama
+  if (state.randomEventSlots && Object.keys(state.randomEventSlots).length > 0) return;
+
+  // Sabit eventlerin kullandığı (day, slot) çiftlerini topla
+  const usedSlots = new Set();
+  RANDOM_EVENTS_CONFIG.filter(e => e.type === 'fixed').forEach(e => {
+    usedSlots.add(`${e.day}-${e.slot}`);
+  });
+
+  const slots = {};
+  const randomEvents = RANDOM_EVENTS_CONFIG.filter(e => e.type === 'random');
+
+  for (const ev of randomEvents) {
+    let attempts = 0;
+    let assigned = false;
+    while (attempts < 50 && !assigned) {
+      const minDay = ev.minDay || 1;
+      const maxDay = ev.maxDay || 10;
+      const day = minDay + Math.floor(Math.random() * (maxDay - minDay + 1));
+      const slot = Math.floor(Math.random() * TOTAL_SLOTS);
+      const key = `${day}-${slot}`;
+      if (!usedSlots.has(key)) {
+        usedSlots.add(key);
+        slots[ev.id] = { day, slot };
+        assigned = true;
+      }
+      attempts++;
+    }
+  }
+  state.randomEventSlots = slots;
+}
+
+// Tek unified event check — checkSpecialEvents() bunu çağırır
+function getEventsForCurrentSlot() {
+  return RANDOM_EVENTS_CONFIG.filter(ev => {
+    if (state.triggeredEvents.has(ev.id)) return false;  // Zaten tetiklendi
+    if (ev.type === 'fixed') {
+      return ev.day === state.day && ev.slot === state.slot;
+    } else {
+      const assigned = state.randomEventSlots[ev.id];
+      return assigned && assigned.day === state.day && assigned.slot === state.slot;
+    }
+  });
+}
+
+// Birden fazla event aynı slotta olabilir → sırayla queue'ye al
+let eventQueue = [];
+function processEventQueue() {
+  if (eventQueue.length === 0) { renderGame(); return; }
+  const ev = eventQueue.shift();
+  state.triggeredEvents.add(ev.id);
+
+  if (ev.onTrigger) ev.onTrigger();
+  applyEffects(ev.effects || {});
+
+  const extraHtml = ev.extraHtml ? ev.extraHtml(ev) : null;
+  showGenericPopup(
+    ev.emoji, ev.title, ev.body, ev.effects,
+    extraHtml,
+    () => processEventQueue(),
+    ev.popupClass || ''
+  );
+}
 
 // ---- DIARY TEMPLATES ----
 const DIARY_TEMPLATES = {
@@ -1408,12 +1758,11 @@ let state = {
   day: 1,
   slot: 0,
   stats: { ...STATS_INITIAL },
-  diary: [],
+  diary: [],           // [{ day, auto, manual }]  ← manual: kullanıcı notları
   usedOneTime: new Set(),
-  dayActivities: [],    // activities done this day
-  birthdayTriggered: false,
-  kediEventTriggered: false,   // kedi artık gün 5 popup eventi
-  turkeyMatchShown: new Set(),
+  dayActivities: [],
+  triggeredEvents: new Set(),     // Tetiklenmiş event id'leri
+  randomEventSlots: {},           // { kedi: {day,slot}, ugurbocegi: {day,slot} }
   mertPopupLastDay: -1,
   gameOver: false
 };
@@ -1671,52 +2020,11 @@ function advanceSlotInner() {
 }
 
 function checkSpecialEvents() {
-  // Birthday: Day 2, Slot 0 (start of day)
-  if (state.day === 2 && state.slot === 0 && !state.birthdayTriggered) {
-    state.birthdayTriggered = true;
-    const ev = RANDOM_EVENTS.birthday;
-    setTimeout(() => {
-      applyEffects(ev.effects);
-      triggerConfetti();
-      showGenericPopup(
-        ev.emoji, ev.title, ev.body, ev.effects,
-        `<div class="diary-entry-preview" style="margin-bottom:12px">"${ev.mertMessage}"</div>`,
-        () => renderGame(),
-        'birthday-popup'
-      );
-    }, 400);
-  }
-
-  // 🐱 Kedi eventi: Gün 5, slot 2'de popup olarak gelir (artık aktivite değil)
-  if (state.day === 5 && state.slot === 2 && !state.kediEventTriggered) {
-    state.kediEventTriggered = true;
-    setTimeout(() => {
-      applyEffects({ mutluluk: +10, endise: -5 });
-      showGenericPopup(
-        '🐱', 'Kampüste Kedi Sürprizi!',
-        'Fakülteye giderken minik bir kedi sana sürtündü! Bir süre sevildi, mırladı. Hayatın küçük güzellikleri... 🐾',
-        { mutluluk: +10, endise: -5 },
-        null,
-        () => renderGame(),
-        ''
-      );
-    }, 400);
-  }
-
-  // Turkey match
-  if (TURKEY_MATCHES.includes(state.day) && !state.turkeyMatchShown.has(state.day) && state.slot === 4) {
-    state.turkeyMatchShown.add(state.day);
-    setTimeout(() => {
-      applyEffects({ mutluluk: +15 });
-      showGenericPopup(
-        '⚽', '🇹🇷 Türkiye Maçı!',
-        'Türkiye maçı oynuyor! Beraber izleyip bağırdınız, müthiş bir gol! Türkiye kazandı! 🎉🏆',
-        { mutluluk: +15 },
-        null,
-        () => renderGame()
-      );
-    }, 400);
-  }
+  const events = getEventsForCurrentSlot();
+  if (events.length === 0) return;
+  eventQueue.push(...events);
+  // Render'dan önce queue'yu işle (popup zinciri renderGame ile bitecek)
+  setTimeout(() => processEventQueue(), 350);
 }
 
 function showMertPopup(onClose) {
@@ -1725,13 +2033,22 @@ function showMertPopup(onClose) {
   applyEffects(effects);
   spawnHearts();
 
+  // Mert fotoğrafı: images/mert_messages_placeholder.png, yoksa emoji fallback
+  const mertImgHtml = `
+    <div id="mert-popup-img-wrap" style="width:80px;height:80px;border-radius:50%;overflow:hidden;margin:0 auto 10px;background:var(--pink-light);display:flex;align-items:center;justify-content:center;font-size:2.5rem">
+      <img src="images/mert_messages_placeholder.png" alt="Mert"
+        style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+        onerror="this.parentElement.innerHTML='❤️'">
+    </div>
+  `;
+
   const html = `
-    <span class="popup-emoji">❤️</span>
+    ${mertImgHtml}
     <div class="popup-title">Mert diyor ki:</div>
-    <div class="popup-body" style="font-size:1.1rem;font-weight:700;color:#be185d">"${m.msg}"</div>
+    <div class="popup-body" style="font-size:1.05rem;font-weight:700;color:#be185d">"${m.msg}"</div>
     <div class="popup-effects">
-      <span class="popup-effect-tag effect-pos">😊 Mutluluk +5</span>
-      <span class="popup-effect-tag effect-pos">😰 Endişe -3</span>
+      <span class="popup-effect-tag effect-pos">😊 Mutluluk</span>
+      <span class="popup-effect-tag effect-pos">😰 Endişe ↓</span>
     </div>
     <button class="btn-popup-ok" onclick="closePopup()">💕 Teşekkürler</button>
   `;
@@ -1744,7 +2061,14 @@ function endDay() {
 
   // Generate diary entry
   const entry = generateDiaryEntry();
-  state.diary.push({ day: state.day, text: entry });
+  // diary objesi: { day, auto: string, manual: [] }
+  // Manual notlar gün içinde kullanıcıdan gelir
+  const existingEntry = state.diary.find(d => d.day === state.day);
+  if (existingEntry) {
+    existingEntry.auto = entry;
+  } else {
+    state.diary.push({ day: state.day, auto: entry, manual: [] });
+  }
 
   // Show day summary popup
   showDaySummary(entry, () => {
@@ -1932,7 +2256,8 @@ function generateDiaryEntry() {
     }
   }
   // Kedi eventi oldu mu bu gün?
-  if (state.day === 5 && state.kediEventTriggered && DIARY_TEMPLATES.kedi) {
+  // Kedi eventi bu gün tetiklendi mi?
+  if (state.triggeredEvents.has('kedi') && DIARY_TEMPLATES.kedi) {
     const opts = DIARY_TEMPLATES.kedi;
     return opts[Math.floor(Math.random() * opts.length)];
   }
@@ -1946,24 +2271,245 @@ function generateDiaryEntry() {
 function showDiary() {
   document.getElementById('screen-game').classList.remove('active');
   document.getElementById('screen-diary').classList.add('active');
+  renderDiaryEntries();
+}
 
+function renderDiaryEntries() {
   const container = document.getElementById('diary-entries');
+
   if (state.diary.length === 0) {
-    container.innerHTML = `<div class="diary-empty"><div style="font-size:3rem;margin-bottom:12px">📖</div>Henüz günlük girişi yok.<br>Bir gün geçirince buraya yazılacak!</div>`;
+    container.innerHTML = `
+      <div class="diary-empty">
+        <div style="font-size:3rem;margin-bottom:12px">📖</div>
+        Henüz günlük girişi yok.<br>Bir gün geçirince buraya yazılacak!
+      </div>
+      <div class="diary-add-note-area">
+        <div class="diary-add-label">✏️ Bugüne not ekle (Gün ${state.day})</div>
+        <textarea class="diary-textarea" id="diary-input" placeholder="Bugün aklında ne var?..."></textarea>
+        <button class="diary-add-btn" onclick="addDiaryNote()">💾 Kaydet</button>
+      </div>
+    `;
     return;
   }
 
-  container.innerHTML = state.diary.map(d => `
-    <div class="diary-entry-card">
-      <div class="diary-day-label">Gün ${d.day}</div>
-      <div class="diary-text">"${d.text}"</div>
+  // Tüm günleri göster (en yeniden eskiye)
+  const entries = [...state.diary].reverse();
+  const entriesHtml = entries.map(d => {
+    const manualHtml = d.manual && d.manual.length > 0
+      ? d.manual.map((note, i) => `
+          <div class="diary-manual-note">
+            <span class="diary-note-icon">✏️</span>
+            <span class="diary-note-text">${escapeHtml(note)}</span>
+            <button class="diary-note-delete" onclick="deleteDiaryNote(${d.day}, ${i})" title="Sil">×</button>
+          </div>
+        `).join('')
+      : '';
+
+    const autoHtml = d.auto
+      ? `<div class="diary-auto-entry"><span class="diary-auto-icon">🌸</span>"${d.auto}"</div>`
+      : '';
+
+    return `
+      <div class="diary-entry-card">
+        <div class="diary-day-label">📅 Gün ${d.day}</div>
+        ${autoHtml}
+        ${manualHtml}
+      </div>
+    `;
+  }).join('');
+
+  // Bugünkü günün manuel not input alanı (sadece aktif günde göster)
+  const todayEntry = state.diary.find(d => d.day === state.day);
+  const hasToday = !!todayEntry;
+  const addNoteHtml = `
+    <div class="diary-add-note-area">
+      <div class="diary-add-label">✏️ Bugüne not ekle (Gün ${state.day})</div>
+      <textarea class="diary-textarea" id="diary-input" placeholder="Bugün aklında ne var?..."></textarea>
+      <button class="diary-add-btn" onclick="addDiaryNote()">💾 Kaydet</button>
     </div>
-  `).reverse().join('');
+  `;
+
+  container.innerHTML = addNoteHtml + entriesHtml;
+}
+
+function addDiaryNote() {
+  const input = document.getElementById('diary-input');
+  const text = input ? input.value.trim() : '';
+  if (!text) { showToast('Bir şeyler yaz önce! ✏️'); return; }
+
+  let entry = state.diary.find(d => d.day === state.day);
+  if (!entry) {
+    entry = { day: state.day, auto: null, manual: [] };
+    state.diary.push(entry);
+  }
+  entry.manual.push(text);
+  input.value = '';
+  renderDiaryEntries();
+  showToast('Not kaydedildi! 📓');
+}
+
+function deleteDiaryNote(day, index) {
+  const entry = state.diary.find(d => d.day === day);
+  if (entry && entry.manual) {
+    entry.manual.splice(index, 1);
+    renderDiaryEntries();
+  }
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function closeDiary() {
   document.getElementById('screen-diary').classList.remove('active');
   document.getElementById('screen-game').classList.add('active');
+}
+
+// ============================================================
+// PLANNER SCREEN
+// ============================================================
+// plan: { "day-slot": activityId }  (sadece future slotlar)
+let plan = {};
+let plannerMode = 'all'; // 'all' | 'today'
+let openPlannerDays = new Set();  // Açık accordion günler
+let pickerOpenSlot = null;        // Şu an açık aktivite picker'ın slotu
+
+function showPlannerAll() {
+  plannerMode = 'all';
+  openPlannerDays = new Set([state.day]); // Bugünü varsayılan açık
+  document.getElementById('planner-title').textContent = '📅 10 Günlük Plan';
+  document.getElementById('planner-subtitle').textContent = 'Geçmiş & gelecek — ileriye plan yap';
+  document.getElementById('screen-game').classList.remove('active');
+  document.getElementById('screen-planner').classList.add('active');
+  renderPlanner();
+}
+
+function showPlannerToday() {
+  plannerMode = 'today';
+  openPlannerDays = new Set([state.day]);
+  document.getElementById('planner-title').textContent = `🕐 Gün ${state.day} Planı`;
+  document.getElementById('planner-subtitle').textContent = 'Bugünün slotları';
+  document.getElementById('screen-game').classList.remove('active');
+  document.getElementById('screen-planner').classList.add('active');
+  renderPlanner();
+}
+
+function closePlanner() {
+  document.getElementById('screen-planner').classList.remove('active');
+  document.getElementById('screen-game').classList.add('active');
+  pickerOpenSlot = null;
+}
+
+function renderPlanner() {
+  const body = document.getElementById('planner-body');
+  const hasPlan = Object.keys(plan).length > 0;
+  document.getElementById('planner-confirm-btn').style.display = hasPlan ? 'block' : 'none';
+
+  const days = plannerMode === 'today' ? [state.day] : Array.from({length:10}, (_,i) => i+1);
+
+  body.innerHTML = days.map(d => {
+    const isPast = d < state.day;
+    const isToday = d === state.day;
+    const isFuture = d > state.day;
+    const stateLabel = isPast ? '✓ Geçmiş' : isToday ? '▶ Bugün' : '◦ Gelecek';
+    const headerClass = isPast ? 'past' : isToday ? 'today' : 'future';
+    const isOpen = openPlannerDays.has(d);
+
+    const slotsHtml = TIMES.map((time, slotIdx) => {
+      const key = `${d}-${slotIdx}`;
+      const isCurrentSlot = isToday && slotIdx === state.slot;
+      const isPastSlot = isPast || (isToday && slotIdx < state.slot);
+
+      // Geçmiş slot: ne yapıldı?
+      let content = '';
+      let slotClass = '';
+      if (isPastSlot) {
+        // dayActivities tüm günü tutmuyor, sadece bugünü; geçmiş günler için history yok
+        // Bugünkü geçmiş slotlarda dayActivities'dan tahmin: slot index eşleşmez, sadece yapılan listesi var
+        slotClass = 'planner-slot-done';
+        content = `<span class="planner-slot-done">✓ Tamamlandı</span>`;
+      } else if (isCurrentSlot) {
+        slotClass = 'planner-slot-current';
+        content = `<span style="color:var(--pink-deep);font-weight:800">← Şu an burada</span>`;
+      } else {
+        // Gelecek slot: plan var mı?
+        const plannedId = plan[key];
+        const plannedAct = plannedId ? ACTIVITIES.find(a => a.id === plannedId) : null;
+        if (plannedAct) {
+          content = `<span class="planner-slot-planned">${plannedAct.icon} ${plannedAct.name}</span>`;
+          slotClass = 'selected-plan';
+        } else {
+          content = `<span class="planner-slot-empty">boş</span>`;
+        }
+      }
+
+      const isPickerOpen = pickerOpenSlot === key;
+      const pickerHtml = isPickerOpen ? buildActivityPicker(key) : '';
+      const selectableClass = (!isPastSlot && !isCurrentSlot) ? 'selectable' : '';
+
+      return `
+        <div class="planner-slot-row ${slotClass} ${selectableClass}" ${(!isPastSlot && !isCurrentSlot) ? `onclick="toggleSlotPicker('${key}')"` : ''}>
+          <div class="planner-slot-time">${time}</div>
+          <div class="planner-slot-content">${content}</div>
+        </div>
+        ${pickerHtml}
+      `;
+    }).join('');
+
+    return `
+      <div class="planner-day-section" id="planner-day-${d}">
+        <div class="planner-day-header ${headerClass}" onclick="togglePlannerDay(${d})">
+          <span>${stateLabel} — Gün ${d}</span>
+          <em class="planner-day-chevron" id="chevron-${d}">${isOpen ? '▲' : '▼'}</em>
+        </div>
+        <div class="planner-day-slots ${isOpen ? 'open' : ''}" id="planner-slots-${d}">
+          ${slotsHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function togglePlannerDay(d) {
+  if (openPlannerDays.has(d)) {
+    openPlannerDays.delete(d);
+  } else {
+    openPlannerDays.add(d);
+  }
+  renderPlanner();
+}
+
+function buildActivityPicker(key) {
+  const chips = ACTIVITIES.map(act => {
+    const isChosen = plan[key] === act.id;
+    return `<div class="planner-act-chip ${isChosen ? 'chosen' : ''}" onclick="selectPlanSlot('${key}','${act.id}',event)">${act.icon}<br><span style="font-size:0.65rem">${act.name}</span></div>`;
+  }).join('');
+  const clearChip = `<div class="planner-act-chip planner-act-clear" onclick="selectPlanSlot('${key}',null,event)">🗑️<br><span style="font-size:0.65rem">Temizle</span></div>`;
+  return `<div class="planner-act-picker">${chips}${clearChip}</div>`;
+}
+
+function toggleSlotPicker(key) {
+  pickerOpenSlot = pickerOpenSlot === key ? null : key;
+  renderPlanner();
+}
+
+function selectPlanSlot(key, actId, event) {
+  event.stopPropagation();
+  if (actId === null) {
+    delete plan[key];
+  } else {
+    plan[key] = actId;
+  }
+  pickerOpenSlot = null;  // Picker'ı kapat seçimden sonra
+  renderPlanner();
+}
+
+function confirmPlan() {
+  const count = Object.keys(plan).length;
+  showToast(`${count} slot planlandı! ✅`);
+  // Planı kaydet — state'e yazabiliriz, oyun ilerleyince kullanılabilir
+  // Şimdilik görsel onay yeterli
+  closePlanner();
 }
 
 // ============================================================
@@ -2126,12 +2672,15 @@ function startGame() {
     diary: [],
     usedOneTime: new Set(),
     dayActivities: [],
-    birthdayTriggered: false,
-    kediEventTriggered: false,
-    turkeyMatchShown: new Set(),
+    triggeredEvents: new Set(),
+    randomEventSlots: {},
     mertPopupLastDay: -1,
     gameOver: false
   };
+  eventQueue = [];
+
+  // Random event slotlarını oyun başında ata (çakışmadan)
+  assignRandomEventSlots();
 
   showScreen('screen-game');
   updateChibi('default', getIdleBubble());
