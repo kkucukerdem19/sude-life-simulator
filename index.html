@@ -1292,7 +1292,7 @@ const ACTIVITIES = [
     id: 'okul',
     name: "Medipol'e Git",
     icon: '🏫',
-    description: "Derse katıl, hoca dinle.",
+    description: "Ders dinledin.",
     baseEffects: { not: +1, enerji: -5, endise: -3 },
     chibiState: 'study',
     colorClass: 'acc-blue',
@@ -1310,41 +1310,41 @@ const ACTIVITIES = [
     id: 'ders',
     name: 'Ders Çalış',
     icon: '📚',
-    description: 'Notları gözden geçir, konuları çalış.',
+    description: 'Notları gözden geçirip, konulara çalıştın.',
     baseEffects: { not: +2, enerji: -3, endise: -5 },
     chibiState: 'study',
     colorClass: 'acc-blue',
     imageEmoji: '📖',
-    bubbles: ['Hematolojinin son slaytını bitirdim! 💪','Endoktrin çalışmak istemiyordum! 🤮','Romatoloji tekrarı yaptım! 📚','Asit-bazı anladım! 🤓']
+    bubbles: ['Hematolojinin son slaytını bitirdim! 💪','Endokrin çalışmak istemiyordum! 🤮','Romatoloji tekrarı yaptım! 📚','Asit-bazı anladım! 🤓']
   },
   {
     id: 'altkatayin',
     name: 'Alt Kata İn',
     icon: '🏠',
-    description: 'Biraz sosyalleş, aile ile zaman geç.',
+    description: 'Biraz da alt katta çalıştın.',
     baseEffects: { mutluluk: +3, enerji: -1, endise: -1 },
     chibiState: 'happy',
     colorClass: 'acc-orange',
     imageEmoji: '🏡',
-    bubbles: ['Kendime kahve yaptım! ☕','Her odada klime çok iyi geldi. ❄️','Yine herkesi uyutup eve çıktım. 😴','Şahika mutfağa girdi! 🐈']
+    bubbles: ['Kendime kahve yaptım! ☕','Her odada klima çok iyi geldi. ❄️','Yine herkesi uyutup eve çıktım. 😴','Şahika mutfağa girdi! 🐈']
   },
   {
     id: 'facetime',
     name: "Mert'le FaceTime Yap",
     icon: '📱',
     description: "Mert ile video görüşme yap.",
-    baseEffects: { mutluluk: +5, enerji: +3, endise: -3 },
+    baseEffects: { mutluluk: +5, iliski: +2, enerji: +3, endise: -3 },
     chibiState: 'mert',
     colorClass: 'acc-pink',
     imageEmoji: '❤️',
-    bubbles: ["Mert'e ders planlarımı anlattım! ❤️","Mert'le konuşunca rahatlıyorum! 🥰","Mert'i özlediğimi fark ettim! 💕","Mert'e artık iş bul dedim! 💻"]
+    bubbles: ["Mert'e ders planlarımı anlattım! ❤️","Mert yine ekran görüntüsü aldı! 🤬","Mert'i özlediğimi fark ettim! 💕","Mert'e artık iş bul dedim! 💻"]
   },
   {
     id: 'bulus',
     name: "Mert'le Buluş",
     icon: '💑',
     description: "Mert ile dışarı çık, vakit geçir.",
-    baseEffects: { mutluluk: +10, enerji: -3, endise: -1 },
+    baseEffects: { mutluluk: +10, iliski: +5, enerji: -3, endise: -1 },
     chibiState: 'mert',
     colorClass: 'acc-pink',
     imageEmoji: '💕',
@@ -1358,7 +1358,7 @@ const ACTIVITIES = [
     id: 'arkadaslar',
     name: 'Arkadaşlarla Buluş',
     icon: '👯‍♀️',
-    description: 'Kampüste arkadaşlarla görüş.',
+    description: 'Arkadaşlarla görüşmek için dışarı çıktın.',
     baseEffects: { mutluluk: +7, enerji: -3, endise: +3 },
     chibiState: 'happy',
     colorClass: 'acc-yellow',
@@ -1373,7 +1373,7 @@ const ACTIVITIES = [
     id: 'kahve',
     name: 'Kahve / Cola Zero İç',
     icon: '☕',
-    description: 'Kafein takviyesi, konsantrasyon artışı!',
+    description: 'Kafein takviyesi aldın.',
     baseEffects: { enerji: +5, endise: +1 },
     chibiState: 'happy',
     colorClass: 'acc-orange',
@@ -1395,7 +1395,7 @@ const ACTIVITIES = [
     id: 'theboys',
     name: 'The Boys İzle',
     icon: '📺',
-    description: 'Hak ettin, biraz dizi zamanı!',
+    description: 'Derse küçük bir ara verdin!',
     baseEffects: { mutluluk: +3, endise: +3 },
     chibiState: 'happy',
     colorClass: 'acc-red',
@@ -1411,7 +1411,7 @@ const ACTIVITIES = [
     id: 'pilates',
     name: 'Pilates Yap / Padel Oyna',
     icon: '🧘‍♀️',
-    description: 'Egzersiz yap, zihin ve bedeni dinlendir.',
+    description: 'Spor yapıp, enerjini attın!',
     baseEffects: {  mutluluk: +3, enerji: -5, endise: +3 },
     chibiState: 'sport',
     colorClass: 'acc-green',
@@ -1424,7 +1424,7 @@ const ACTIVITIES = [
     id: 'uyu',
     name: 'Uyu / Dinlen',
     icon: '😴',
-    description: "Güzel bir uyku çek.",
+    description: "Güzel bir uyku çektin.",
     baseEffects: { enerji: +10, endise: +1 },
     chibiState: 'tired',
     colorClass: 'acc-purple',
@@ -1502,7 +1502,7 @@ const RANDOM_EVENTS_CONFIG = [
     emoji: '🎉',
     body: "Bugün doğum günün! Mert çiçek gönderdi, arkadaşların sürpriz yaptı. Hayatının en güzel günlerinden biri! 🌹💐",
     effects: { mutluluk: +25, endise: -10 },
-    extraHtml: (ev) => `<div class="diary-entry-preview" style="margin-bottom:12px">"Doğum günün kutlu olsun aşkım! En güzel günlerin hep önünde ❤️🎂"</div>`,
+    extraHtml: (ev) => `<div class="diary-entry-preview" style="margin-bottom:12px">"Doğum günün kutlu olsun güzelim! İyi ki varsın, seni seviyorum! ❤️🎂"</div>`,
     popupClass: 'birthday-popup',
     onTrigger: () => { triggerConfetti(); }
   },
@@ -1666,70 +1666,19 @@ function processEventQueue() {
 
 // ---- DIARY TEMPLATES ----
 const DIARY_TEMPLATES = {
-  ders: [
-    "Konuları bitirdim sayılır! 📚",
-    "Çok az daha dayanmam lazım! 💪",
-    "Konu tekrarına geçiyorum artık! 📚"
-  ],
-  facetime: [
-    "Mert'le uzun uzun konuştuk, çok iyi geldi. 📱❤️",
-    "Facetime sona erince eksik hissettim açıkçası. 🥺",
-    "Mert'i görmek endişemi bir anda aldı gitti."
-  ],
-  bulus: [
-    "Mert'le harika bir gün geçirdik! En güzel molalardan biri. 💑",
-    "Mert'i görmek tüm yorgunluğumu aldı. ❤️",
-    "Beraber vakit geçirmek bu günleri daha güzel yapıyor."
-  ],
-  pilates: [
-    "Pilates sonrası zihin daha net! Vücudum teşekkür ediyor. 🧘‍♀️",
-    "Hareket etmek bazen en iyi ilaç.",
-    "Spordan sonra her şey daha hafif hissettirdi."
-  ],
-  okul: [
-    "Derse dikkatli katıldım, hoca bazı önemli noktalar anlattı. 📝",
-    "Okul koridorlarında yürümek güzel hissettirdi.",
-    "Kampüste olmak motive etti beni bugün."
-  ],
-  uyu: [
-    "Biraz uzandım, yeniden şarj oldum. 💤",
-    "İyi uyku her şeyin başı.",
-    "Dinlendim, yarına hazırım."
-  ],
-  theboys: [
-    "The Boys muhteşem! Beyin dinlendirme moduna geçtim. 📺😂",
-    "Dizi sonrası çok daha iyi hissediyorum.",
-    "Molanın hakkını verdim bugün. 🙈"
-  ],
-  arkadaslar: [
-    "Arkadaşlarımla güldük, konuştuk. Sosyal olmak da önemli! 🧋",
-    "Onları görmek iyi geldi, enerji yüklendim.",
-    "Bir süre de olsa stresi attık beraber."
-  ],
-  altkatayin: [
-    "Aileyle biraz vakit geçirdim, güzel oldu. 🏡",
-    "Biraz aşağı inmek kafayı dağıttı.",
-    "Ailem moral verdi bugün, iyi geldi."
-  ],
-  kahve: [
-    "Kahve/cola zero olmasa bugün bitiremezdim. ☕",
-    "Kafein takviyesi şart bu günlerde! 🥤",
-    "Bir Cola Zero ile her şey daha iyi."
-  ],
-  cips: [
-    "Küçük ödüllerle hayat daha güzel. 🍟",
-    "Cips yerken bir an her şeyi unuttum. 😋",
-    "Snack molaları da önemli tabii. 🍿"
-  ],
-  kedi: [
-    "Kampüste bir kedi sürprizi yaşadım! 🐾😸",
-    "Kedicik tam da ihtiyacım olduğu an geldi."
-  ],
-  default: [
-    "Sıradan ama güzel bir gündü. 🌸",
-    "Bugün de geçti, yarın yeni bir başlangıç. ✨",
-    "Adım adım ilerleyip bitireceğim bunu. ✨"
-  ]
+  ders: ['Hematolojinin son slaytını bitirdim! 💪','Endokrin çalışmak istemiyordum! 🤮','Romatoloji tekrarı yaptım! 📚','Asit-bazı anladım! 🤓'],
+  facetime: ["Mert'e ders planlarımı anlattım! ❤️","Mert yine ekran görüntüsü aldı! 🤬","Mert'i özlediğimi fark ettim! 💕","Mert'e artık iş bul dedim! 💻"],
+  bulus: ["Geç kaldım ama Mert artık bir şey demiyor! 🥰","Mert'e matcha içirdim! 🍵","Mert'le birlikte çalıştık! 📚","Mert geç kaldı! 🤬"],
+  pilates: ['Padelde çok iyi oynadım! 🎾','Her yerim ağrıdı. 😩','Yaza hazırım! ☀️'],
+  okul: ['Olgu dersinde imza attım! ✏️','Verimli bir gün oldu! 📝','Derste uyurken yine fotoğrafımı çekmişler! 🤬.','Çok tatlı bir hocaydı! 😇'],
+  uyu: ['Uykumu çok iyi aldım! 💤','Çok garip rüyalar gördüm! 🌙','Dinlendim, ders çalışmaya hazırım! ✨'],
+  theboys: ["Bu dizide herkesin kafası patlıyor! 🤯","Nerede kaldığımı hatırlamıyorum! 😅","Mert'e yetişmem lazım! 🏃‍♀️"],
+  arkadaslar: ['Artık derse dönmem lazım! 😟','Sınavım bitsin bir sürü plan yapıcam! 👯‍♀️','Arkadaşlarımla olmayı özlemişim! 🙂'],
+  altkatayin: ['Kendime kahve yaptım! ☕','Her odada klima çok iyi geldi. ❄️','Yine herkesi uyutup eve çıktım. 😴','Şahika mutfağa girdi! 🐈'],
+  kahve: ['Sadece Cola Zero içerim! 🥤','Günde 6 kahveye kadar içebilirim! ☕','Kafeini aldım, artık derse odaklanabilirim. ⚡'],
+  cips: ['Cips yemeyi çok seviyorum. 🍟','Sirkeli cips yedim! 🥳','Mert bana Flaming Hot almış! 😋'],
+  kedi: ["Yolda bir kedi sevdim, aşırı tatlıydı! 🐾😸", "Bugün bir sürü yavru kedi gördüm, çok tatlılardı! 🐾😸"],
+  default: ["Sınava kadar plan yapıp çalışmalıyım! 🙂", "Sınav sonrasında çok mutlu olacağım! 😇", "Adım adım ilerleyip bitireceğim bunu! ✨"]
 };
 
 // ============================================================
