@@ -1290,149 +1290,149 @@ const ACTIVITIES = [
   // Sıra: okul, ders, altkatayin, facetime, bulus, arkadaslar, kahve, cips, theboys, pilates — en sonda uyu tek
   {
     id: 'okul',
-    name: 'Okula Git',
+    name: 'Medipol'e Git',
     icon: '🏫',
     description: "Derse katıl, hoca dinle.",
-    baseEffects: { not: +12, enerji: -12, endise: -4 },
+    baseEffects: { not: +1, enerji: -5, endise: -3 },
     chibiState: 'study',
     colorClass: 'acc-blue',
     imageEmoji: '🎓',
-    bubbles: ['Derse dikkat ettim! 📝','Hoca çok önemli şeyler anlattı!','Not aldım, iyi gitti. ✏️'],
+    bubbles: ['Olgu dersinde imza attım! ✏️','Verimli bir gün oldu! 📝','Derste uyurken yine fotoğrafımı çekmişler! 🤬.','Çok tatlı bir hocaydı! 😇'],
     oncePerDay: true,
-    blockedReason: 'Bugün zaten okula gittin! 🏫',
+    blockedReason: 'Bugün zaten Medipol'e gittin! 🏫',
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
-      return h >= 10 && h <= 14;
+      return h >= 10 && h <= 16;
     },
-    conditionReason: 'Okul saatleri sadece 10:00–14:00 arası! 📚'
+    conditionReason: 'Okul saatleri sadece 10:00–16:00 arası! 📚'
   },
   {
     id: 'ders',
     name: 'Ders Çalış',
     icon: '📚',
     description: 'Notları gözden geçir, konuları çalış.',
-    baseEffects: { not: +8, enerji: -10, endise: -3 },
+    baseEffects: { not: +2, enerji: -3, endise: -5 },
     chibiState: 'study',
     colorClass: 'acc-blue',
     imageEmoji: '📖',
-    bubbles: ['Hadi çalışalım! 💪','Odaklanmak lazım...','Konsantre oldum, iyi gidiyor! 📚','Az kaldı, devam!']
+    bubbles: ['Hematolojinin son slaytını bitirdim! 💪','Endoktrin çalışmak istemiyordum! 🤮','Romatoloji tekrarı yaptım! 📚','Asit-bazı anladım! 🤓']
   },
   {
     id: 'altkatayin',
     name: 'Alt Kata İn',
     icon: '🏠',
     description: 'Biraz sosyalleş, aile ile zaman geç.',
-    baseEffects: { mutluluk: +5, enerji: +3, endise: +2 },
+    baseEffects: { mutluluk: +3, enerji: -1, endise: -1 },
     chibiState: 'happy',
     colorClass: 'acc-orange',
     imageEmoji: '🏡',
-    bubbles: ['Eve inmek tatlı geldi! 🏡','Aileyle güzel vakit geçirdik.','Çay içtik, muhabbet ettik. ☕']
+    bubbles: ['Kendime kahve yaptım! ☕','Her odada klime çok iyi geldi. ❄️','Yine herkesi uyutup eve çıktım. 😴','Şahika mutfağa girdi! 🐈']
   },
   {
     id: 'facetime',
-    name: "Mert'le FaceTime",
+    name: "Mert'le FaceTime Yap",
     icon: '📱',
     description: "Mert ile video görüşme yap.",
-    baseEffects: { mutluluk: +10, enerji: +5, endise: -4 },
+    baseEffects: { mutluluk: +5, enerji: +3, endise: -3 },
     chibiState: 'mert',
     colorClass: 'acc-pink',
     imageEmoji: '❤️',
-    bubbles: ["Mert'i görmek iyi geldi! ❤️","Mert çok tatlıydı bugün 🥰","Konuşmak rahatlatıcıydı! 💕","Mert'siz olmazdı bu süreç ❤️"]
+    bubbles: ["Mert'e ders planlarımı anlattım! ❤️","Mert'le konuşunca rahatlıyorum! 🥰","Mert'i özlediğimi fark ettim! 💕","Mert'e artık iş bul dedim! 💻"]
   },
   {
     id: 'bulus',
-    name: "Mert ile Buluş",
+    name: "Mert'le Buluş",
     icon: '💑',
     description: "Mert ile dışarı çık, vakit geçir.",
-    baseEffects: { mutluluk: +15, enerji: -8, endise: +3 },
+    baseEffects: { mutluluk: +10, enerji: -3, endise: -1 },
     chibiState: 'mert',
     colorClass: 'acc-pink',
     imageEmoji: '💕',
-    bubbles: ["Mert ile vakit geçirmek harika! 🌹","En güzel mola buydu. 💑","Mert'i görmek her şeye değer! 🌸"],
+    bubbles: ["Geç kaldım ama Mert artık bir şey demiyor! 🥰","Mert'e matcha içirdim! 🍵","Mert'le birlikte çalıştık! 📚",'Mert geç kaldı! 🤬'],
     oncePerDay: true,
     blockedReason: "Bugün Mert'le zaten buluştun! ❤️",
-    condition: (state) => state.slot < 6,
-    conditionReason: 'Geç saatte buluşmak zor, yarın! 🌙'
+    condition: (state) => state.slot < 7,
+    conditionReason: 'Geç saatte buluşmak zor, yarın için plan yap! 🌙'
   },
   {
     id: 'arkadaslar',
     name: 'Arkadaşlarla Buluş',
     icon: '👯‍♀️',
     description: 'Kampüste arkadaşlarla görüş.',
-    baseEffects: { mutluluk: +12, enerji: -6, endise: +3 },
+    baseEffects: { mutluluk: +7, enerji: -3, endise: +3 },
     chibiState: 'happy',
     colorClass: 'acc-yellow',
     imageEmoji: '🧋',
-    bubbles: ['Arkadaşlarım çok iyi! 🥰','Güldük, konuştuk harika oldu!','Onları görmek güzel hissettirdi. 🌸'],
+    bubbles: ['Artık derse dönmem lazım! 😟','Sınavım bitsin bir sürü plan yapıcam! 👯‍♀️','Arkadaşlarımla olmayı özlemişim. 🙂'],
     oncePerDay: true,
     blockedReason: 'Bugün arkadaşlarınla zaten görüştün! 👯‍♀️',
-    condition: (state) => state.slot < 6,
-    conditionReason: 'Bu saatte arkadaşlar dağıldı bile! 🌙'
+    condition: (state) => state.slot < 7,
+    conditionReason: 'Evde ders çalışıcam ben, gece daha iyi çalışıyorum! 🌙'
   },
   {
     id: 'kahve',
-    name: 'Kahve / Cola Zero',
+    name: 'Kahve / Cola Zero İç',
     icon: '☕',
     description: 'Kafein takviyesi, konsantrasyon artışı!',
-    baseEffects: { enerji: +8, endise: +4 },
+    baseEffects: { enerji: +5, endise: +1 },
     chibiState: 'happy',
     colorClass: 'acc-orange',
     imageEmoji: '☕',
-    bubbles: ['Kafein girdi, hazırım! ⚡','Cola Zero mis gibi! 🥤','Bu kahve olmadan olmaz.','Kafein = motivasyon 🙃']
+    bubbles: ['Sadece Cola Zero içerim! 🥤','Günde 6 kahveye kadar içebilirim! ☕','Kafeini aldım, artık derse odaklanabilirim. ⚡']
   },
   {
     id: 'cips',
     name: 'Cips Ye',
     icon: '🍟',
     description: 'Hak ettin, küçük bir ödül!',
-    baseEffects: { mutluluk: +8, endise: +3 },
+    baseEffects: { mutluluk: +3, endise: +1 },
     chibiState: 'happy',
     colorClass: 'acc-yellow',
     imageEmoji: '🍿',
-    bubbles: ['Cips olmasa olmaz. 🍟','Küçük bir ödül kendine. 🥳','Crunch crunch... Harika! 😋']
+    bubbles: ['Cips yemeyi çok seviyorum. 🍟','Sirkeli cips yedim! 🥳','Mert bana Flaming Hot almış! 😋']
   },
   {
     id: 'theboys',
     name: 'The Boys İzle',
     icon: '📺',
     description: 'Hak ettin, biraz dizi zamanı!',
-    baseEffects: { mutluluk: +12, enerji: -5, endise: +4 },
+    baseEffects: { mutluluk: +3, endise: +3 },
     chibiState: 'happy',
     colorClass: 'acc-red',
     imageEmoji: '🎬',
-    bubbles: ["The Boys çok iyi! 🙈","Beyin dinlendirme modu aktif!","Bir bölüm daha izlesem mi... 😅"],
+    bubbles: ["Bu dizide herkesin kafası patlıyor! 🤯","Nerede kaldığımı hatırlamıyorum! 😅","Mert'e yetişmem lazım! 🏃‍♀️"],
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
-      return h >= 18 || h <= 2;
+      return h <= 11;
     },
-    conditionReason: 'Dizi vakti akşam başlar! 🌆'
+    conditionReason: 'Sadece kahvaltıda ve gece yatmadan dizi izlemeyi seviyorum! 🕐'
   },
   {
     id: 'pilates',
-    name: 'Pilates / Padel',
+    name: 'Pilates Yap / Padel Oyna',
     icon: '🧘‍♀️',
     description: 'Egzersiz yap, zihin ve bedeni dinlendir.',
-    baseEffects: { enerji: +15, mutluluk: +8, endise: +2 },
+    baseEffects: {  mutluluk: +3, enerji: -5, endise: +3 },
     chibiState: 'sport',
     colorClass: 'acc-green',
     imageEmoji: '🌿',
-    bubbles: ['Pilates muhteşem hissettiriyor! 🌟','Spor sonrası zihin daha net.','Vücudum teşekkür ediyor! 💪'],
+    bubbles: ['Padelde çok iyi oynadım! 🎾','Her yerim ağrıdı. 😩','Yaza hazırım! ☀️'],
     oncePerDay: true,
-    blockedReason: 'Bugün sporu zaten yaptın! 🧘‍♀️'
+    blockedReason: 'Bugün zaten spor yaptın! 🧘‍♀️'
   },
   {
     id: 'uyu',
     name: 'Uyu / Dinlen',
     icon: '😴',
     description: "Güzel bir uyku çek.",
-    baseEffects: { enerji: +20, endise: -8 },
+    baseEffects: { enerji: +10, endise: +1 },
     chibiState: 'tired',
     colorClass: 'acc-purple',
     imageEmoji: '🌙',
-    bubbles: ['İyi bir uyku her şeyi düzeltiyor... 💤','Zzzz... 🌙','Dinlendim, hazırım! ✨'],
+    bubbles: ['Uykumu çok iyi aldım! 💤','Çok garip rüyalar gördüm! 🌙','Dinlendim, ders çalışmaya hazırım! ✨'],
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
-      return h >= 20 || h <= 2;
+      return h >= 22 || h <= 2;
     },
     conditionReason: 'Henüz uyku vakti değil! ☀️',
     fullWidth: true
