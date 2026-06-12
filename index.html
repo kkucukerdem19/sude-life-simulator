@@ -460,6 +460,19 @@
     to { transform: scale(1); opacity: 1; }
   }
   .popup-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+  .popup-time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--lavender-light);
+    color: var(--lavender-deep);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
   .popup-title {
     font-family: 'Nunito', sans-serif;
     font-size: 1.3rem;
@@ -1036,7 +1049,14 @@
   .planner-act-clear {
     background: #fee2e2; border-color: var(--red-deep); color: var(--red-deep);
   }
-  /* Scrollbar */
+  .planner-act-chip.disabled-chip {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+    color: #9ca3af;
+  }
+  .planner-act-chip.disabled-chip:hover { background: #f3f4f6; border-color: #e5e7eb; }
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 4px; }
@@ -1082,7 +1102,7 @@
     <strong>Merhaba! 👋</strong><br><br>
     Tıp sınavın 10 gün sonra. Notlarını yüksek tutmalı, enerjini korumali, 
     Mert ile güzel vakit geçirmeli ve <strong>mutlu</strong> olmayı unutmamalısın! 
-    Her günde 8 zaman dilimin var.<br><br>
+    Her günde 9 zaman dilimin var.<br><br>
     <strong>Haydi başlayalım! ✨</strong>
   </div>
   <button class="btn-start" onclick="startGame()">🎮 Oynamaya Başla</button>
@@ -1526,6 +1546,27 @@ const RANDOM_EVENTS_CONFIG = [
     body: 'Pencerenin kenarına bir uğur böceği kondu! Uğurlu sayılır... Belki sınav da iyi geçer! 🍀✨',
     effects: { mutluluk: +8, endise: -6 },
     popupClass: ''
+  },
+  // 🚬 IQOS — günde 1-2 kez olsun: 2 ayrı random event instanceı, farklı günlere atanır
+  {
+    id: 'iqos1',
+    type: 'random',
+    minDay: 1, maxDay: 10,
+    title: '🚬 IQOS Molası',
+    emoji: '🚬',
+    body: 'Kısa bir IQOS molası verdirn. Nefes aldın, biraz düşündün. Stres biraz azaldı ama... sağlık?! 😬',
+    effects: { endise: -4, enerji: -2 },
+    popupClass: ''
+  },
+  {
+    id: 'iqos2',
+    type: 'random',
+    minDay: 1, maxDay: 10,
+    title: '🚬 Bir IQOS Daha...',
+    emoji: '🚬',
+    body: 'İkinci IQOS... "Bu da son" dedin ama bilirsun artık. En azından biraz rahatlattı. 😅',
+    effects: { endise: -3, enerji: -2 },
+    popupClass: ''
   }
   // 🆕 Yeni bir event eklemek için buraya aynı formatta bir obje ekle!
 ];
@@ -1542,7 +1583,6 @@ const MERT_MESSAGES = [
 
 // Oyun başında random eventlere slot ata (çakışma olmadan)
 function assignRandomEventSlots() {
-  // Zaten atanmışsa tekrar atama
   if (state.randomEventSlots && Object.keys(state.randomEventSlots).length > 0) return;
 
   // Sabit eventlerin kullandığı (day, slot) çiftlerini topla
@@ -1552,22 +1592,40 @@ function assignRandomEventSlots() {
   });
 
   const slots = {};
+  // Hangi günlerin hangi random event'e atandığını takip et (iqos gibi "aynı güne düşmesin" kuralı için)
+  const usedDaysByGroup = {};  // groupId → Set<day>
+
   const randomEvents = RANDOM_EVENTS_CONFIG.filter(e => e.type === 'random');
 
   for (const ev of randomEvents) {
     let attempts = 0;
     let assigned = false;
-    while (attempts < 50 && !assigned) {
+
+    // iqos1 ve iqos2 aynı güne düşmesin
+    const sameGroupIds = ev.id.startsWith('iqos') ? ['iqos1','iqos2'] : null;
+
+    while (attempts < 100 && !assigned) {
       const minDay = ev.minDay || 1;
       const maxDay = ev.maxDay || 10;
       const day = minDay + Math.floor(Math.random() * (maxDay - minDay + 1));
       const slot = Math.floor(Math.random() * TOTAL_SLOTS);
       const key = `${day}-${slot}`;
-      if (!usedSlots.has(key)) {
-        usedSlots.add(key);
-        slots[ev.id] = { day, slot };
-        assigned = true;
+
+      // Çakışma kontrolü
+      if (usedSlots.has(key)) { attempts++; continue; }
+
+      // Aynı grup içinde aynı gün olmasın
+      if (sameGroupIds) {
+        const conflictDay = sameGroupIds.some(gid => {
+          if (gid === ev.id) return false;
+          return slots[gid] && slots[gid].day === day;
+        });
+        if (conflictDay) { attempts++; continue; }
       }
+
+      usedSlots.add(key);
+      slots[ev.id] = { day, slot };
+      assigned = true;
       attempts++;
     }
   }
@@ -1758,11 +1816,12 @@ let state = {
   day: 1,
   slot: 0,
   stats: { ...STATS_INITIAL },
-  diary: [],           // [{ day, auto, manual }]  ← manual: kullanıcı notları
+  diary: [],           // [{ day, auto, manual }]
   usedOneTime: new Set(),
   dayActivities: [],
-  triggeredEvents: new Set(),     // Tetiklenmiş event id'leri
-  randomEventSlots: {},           // { kedi: {day,slot}, ugurbocegi: {day,slot} }
+  slotHistory: {},     // { "day-slot": actId } geçmiş slotların aktivite kaydı
+  triggeredEvents: new Set(),
+  randomEventSlots: {},
   mertPopupLastDay: -1,
   gameOver: false
 };
@@ -1872,8 +1931,9 @@ function doActivity(act) {
   const computedFx = computeEffects(act);
   applyEffects(computedFx);
 
-  // Track day activity
+  // Track day activity and slot history
   state.dayActivities.push(act.id);
+  state.slotHistory[`${state.day}-${state.slot}`] = act.id;
 
   // Pick random bubble from activity's bubble list
   const bubble = act.bubbles[Math.floor(Math.random() * act.bubbles.length)];
@@ -1919,8 +1979,13 @@ function updateChibi(chibiState, bubble) {
 let popupQueue = [];
 let popupCallback = null;
 
+// Popup'larda üstte gösterilecek gün+saat badge HTML'i
+function popupTimeBadge() {
+  const time = TIMES[state.slot] || TIMES[TOTAL_SLOTS - 1];
+  return `<div class="popup-time-badge">📅 Gün ${state.day} &nbsp;·&nbsp; 🕐 ${time}</div>`;
+}
+
 function showActivityPopup(act, effects, onClose) {
-  // Popup efekt tags: emoji + yeşil/kırmızı arka plan, sayı yok
   const effectHtml = Object.entries(effects).map(([k, v]) => {
     if (k === 'iliski') return '';
     const cls = v > 0 ? 'effect-pos' : 'effect-neg';
@@ -1933,6 +1998,7 @@ function showActivityPopup(act, effects, onClose) {
     : '';
 
   const html = `
+    ${popupTimeBadge()}
     ${imgHtml}
     <div class="popup-title">${act.icon} ${act.name}</div>
     <div class="popup-body">${act.description}</div>
@@ -1942,11 +2008,9 @@ function showActivityPopup(act, effects, onClose) {
 
   openPopup(html, '', onClose || (() => advanceSlot()));
 
-  // Hearts for mert activities
   if (act.id === 'facetime' || act.id === 'bulus') {
     spawnHearts();
   }
-  // Stat flash: sayıları flash'ta göster (çünkü orada kısa süre görünüyor, informative)
   showStatFlash(effects);
 }
 
@@ -1959,6 +2023,7 @@ function showGenericPopup(emoji, title, body, effectsObj, extraHtml, onClose, ex
   }).join('') : '';
 
   const html = `
+    ${popupTimeBadge()}
     <span class="popup-emoji">${emoji}</span>
     <div class="popup-title">${title}</div>
     <div class="popup-body">${body}</div>
@@ -2016,6 +2081,28 @@ function advanceSlotInner() {
 
   // Check for special events
   checkSpecialEvents();
+
+  // Planlanmış aktivite var mı bu slot için?
+  const planKey = `${state.day}-${state.slot}`;
+  if (plan[planKey]) {
+    const plannedAct = ACTIVITIES.find(a => a.id === plan[planKey]);
+    if (plannedAct) {
+      if (isActivityAvailable(plannedAct)) {
+        // Plan geçerli: aktiviteyi yap
+        delete plan[planKey]; // Kullanıldı, temizle
+        renderGame();
+        // Kısa gecikme sonra aktiviteyi göster
+        setTimeout(() => doActivity(plannedAct), 200);
+        return;
+      } else {
+        // Condition sağlanmıyor: planı iptal et, kullanıcıya bildir
+        const reason = getBlockReason(plannedAct);
+        delete plan[planKey];
+        showToast(`Plan iptal: ${reason || 'Koşul sağlanamadı'} ❌`);
+      }
+    }
+  }
+
   renderGame();
 }
 
@@ -2043,6 +2130,7 @@ function showMertPopup(onClose) {
   `;
 
   const html = `
+    ${popupTimeBadge()}
     ${mertImgHtml}
     <div class="popup-title">Mert diyor ki:</div>
     <div class="popup-body" style="font-size:1.05rem;font-weight:700;color:#be185d">"${m.msg}"</div>
@@ -2117,7 +2205,6 @@ function skipAllDays() {
 
 function autoPlayAllSlots(n) {
   if (n <= 0) {
-    // Tüm günler bitti, finale geç
     if (state.day <= 10) {
       applyNotDecay();
       const entry = generateDiaryEntry();
@@ -2127,20 +2214,31 @@ function autoPlayAllSlots(n) {
     return;
   }
 
-  // Auto-play one slot
-  const available = ACTIVITIES.filter(a => isActivityAvailable(a));
-  const weights = available.map(a => {
-    if (a.id === 'uyu' && state.stats.enerji < 30) return 5;
-    if (a.id === 'ders') return 3;
-    if (a.id === 'okul') return 2;
-    return 1;
-  });
-  const totalW = weights.reduce((s, w) => s + w, 0);
-  let r = Math.random() * totalW;
-  let chosen = available[0];
-  for (let i = 0; i < available.length; i++) {
-    r -= weights[i];
-    if (r <= 0) { chosen = available[i]; break; }
+  // Bu slot'ta planlanmış aktivite varsa onu çalıştır, yoksa rastgele seç
+  const planKey = `${state.day}-${state.slot}`;
+  let chosen = null;
+  if (plan[planKey]) {
+    const plannedAct = ACTIVITIES.find(a => a.id === plan[planKey]);
+    if (plannedAct && isActivityAvailable(plannedAct)) {
+      chosen = plannedAct;
+      delete plan[planKey];
+    }
+  }
+  if (!chosen) {
+    const available = ACTIVITIES.filter(a => isActivityAvailable(a));
+    const weights = available.map(a => {
+      if (a.id === 'uyu' && state.stats.enerji < 30) return 5;
+      if (a.id === 'ders') return 3;
+      if (a.id === 'okul') return 2;
+      return 1;
+    });
+    const totalW = weights.reduce((s, w) => s + w, 0);
+    let r = Math.random() * totalW;
+    chosen = available[0];
+    for (let i = 0; i < available.length; i++) {
+      r -= weights[i];
+      if (r <= 0) { chosen = available[i]; break; }
+    }
   }
 
   if (chosen) {
@@ -2148,6 +2246,7 @@ function autoPlayAllSlots(n) {
     const fx = computeEffects(chosen);
     applyEffects(fx);
     state.dayActivities.push(chosen.id);
+    state.slotHistory[`${state.day}-${state.slot}`] = chosen.id;
   }
 
   state.slot++;
@@ -2167,6 +2266,26 @@ function autoPlayAllSlots(n) {
     }
   }
 
+  // Random event kontrolü (slot geçişinde)
+  const slotEvents = getEventsForCurrentSlot();
+  if (slotEvents.length > 0) {
+    slotEvents.forEach(ev => state.triggeredEvents.add(ev.id));
+    const ev = slotEvents[0];
+    if (ev.onTrigger) ev.onTrigger();
+    applyEffects(ev.effects || {});
+    showGenericPopup(
+      ev.emoji, ev.title, ev.body, ev.effects,
+      ev.extraHtml ? ev.extraHtml(ev) : null,
+      () => {
+        slotEvents.slice(1).forEach(e => { applyEffects(e.effects || {}); });
+        renderGame();
+        setTimeout(() => autoPlayAllSlots(n - 1), 50);
+      },
+      ev.popupClass || ''
+    );
+    return;
+  }
+
   // Mert popup şansı: %30 (sadece gün başında, bir kez)
   const isMertMoment = state.mertPopupLastDay !== state.day && state.slot === 1 && Math.random() < 0.30;
   if (isMertMoment) {
@@ -2184,20 +2303,33 @@ function autoPlayAllSlots(n) {
 function autoPlaySlots(n, cb) {
   if (n <= 0) { endDay(); return; }
 
-  // Pick a valid activity randomly (with weights)
-  const available = ACTIVITIES.filter(a => isActivityAvailable(a));
-  const weights = available.map(a => {
-    if (a.id === 'uyu' && state.stats.enerji < 30) return 5;
-    if (a.id === 'ders') return 3;
-    if (a.id === 'okul') return 2;
-    return 1;
-  });
-  const totalW = weights.reduce((s, w) => s + w, 0);
-  let r = Math.random() * totalW;
-  let chosen = available[0];
-  for (let i = 0; i < available.length; i++) {
-    r -= weights[i];
-    if (r <= 0) { chosen = available[i]; break; }
+  // Bu slot'ta planlanmış aktivite varsa onu çalıştır
+  const planKey = `${state.day}-${state.slot}`;
+  let chosen = null;
+  if (plan[planKey]) {
+    const plannedAct = ACTIVITIES.find(a => a.id === plan[planKey]);
+    if (plannedAct && isActivityAvailable(plannedAct)) {
+      chosen = plannedAct;
+      delete plan[planKey];
+    }
+  }
+
+  // Plan yoksa rastgele seç
+  if (!chosen) {
+    const available = ACTIVITIES.filter(a => isActivityAvailable(a));
+    const weights = available.map(a => {
+      if (a.id === 'uyu' && state.stats.enerji < 30) return 5;
+      if (a.id === 'ders') return 3;
+      if (a.id === 'okul') return 2;
+      return 1;
+    });
+    const totalW = weights.reduce((s, w) => s + w, 0);
+    let r = Math.random() * totalW;
+    chosen = available[0];
+    for (let i = 0; i < available.length; i++) {
+      r -= weights[i];
+      if (r <= 0) { chosen = available[i]; break; }
+    }
   }
 
   if (chosen) {
@@ -2205,6 +2337,7 @@ function autoPlaySlots(n, cb) {
     const fx = computeEffects(chosen);
     applyEffects(fx);
     state.dayActivities.push(chosen.id);
+    state.slotHistory[`${state.day}-${state.slot}`] = chosen.id;
     const bubble = chosen.bubbles[Math.floor(Math.random() * chosen.bubbles.length)];
     updateChibi(chosen.chibiState, bubble);
   }
@@ -2212,9 +2345,37 @@ function autoPlaySlots(n, cb) {
   state.slot++;
   if (state.slot >= TOTAL_SLOTS) {
     endDay();
-  } else {
-    setTimeout(() => autoPlaySlots(n - 1, cb), 80);
+    return;
   }
+
+  // Random event kontrolü — varsa popup göster, sonra devam et
+  const slotEvents = getEventsForCurrentSlot();
+  if (slotEvents.length > 0) {
+    slotEvents.forEach(ev => state.triggeredEvents.add(ev.id));
+    const ev = slotEvents[0]; // Birden fazlaysa ilkini göster
+    if (ev.onTrigger) ev.onTrigger();
+    applyEffects(ev.effects || {});
+    showGenericPopup(
+      ev.emoji, ev.title, ev.body, ev.effects,
+      ev.extraHtml ? ev.extraHtml(ev) : null,
+      () => {
+        // Kalan eventleri hızla uygula (popup göstermeden)
+        slotEvents.slice(1).forEach(e => { applyEffects(e.effects || {}); });
+        setTimeout(() => autoPlaySlots(n - 1, cb), 50);
+      },
+      ev.popupClass || ''
+    );
+    return;
+  }
+
+  // Mert popup kontrolü (günde bir kez, %20)
+  if (state.mertPopupLastDay !== state.day && Math.random() < 0.2) {
+    state.mertPopupLastDay = state.day;
+    showMertPopup(() => setTimeout(() => autoPlaySlots(n - 1, cb), 50));
+    return;
+  }
+
+  setTimeout(() => autoPlaySlots(n - 1, cb), 80);
 }
 
 function showDaySummary(entry, onClose) {
@@ -2296,13 +2457,17 @@ function renderDiaryEntries() {
   const entries = [...state.diary].reverse();
   const entriesHtml = entries.map(d => {
     const manualHtml = d.manual && d.manual.length > 0
-      ? d.manual.map((note, i) => `
-          <div class="diary-manual-note">
-            <span class="diary-note-icon">✏️</span>
-            <span class="diary-note-text">${escapeHtml(note)}</span>
-            <button class="diary-note-delete" onclick="deleteDiaryNote(${d.day}, ${i})" title="Sil">×</button>
-          </div>
-        `).join('')
+      ? [...d.manual].reverse().map((note, i) => {
+          // i burada reversed index — delete için original index lazım
+          const origIndex = d.manual.length - 1 - i;
+          return `
+            <div class="diary-manual-note">
+              <span class="diary-note-icon">✏️</span>
+              <span class="diary-note-text">${escapeHtml(note)}</span>
+              <button class="diary-note-delete" onclick="deleteDiaryNote(${d.day}, ${origIndex})" title="Sil">×</button>
+            </div>
+          `;
+        }).join('')
       : '';
 
     const autoHtml = d.auto
@@ -2410,29 +2575,45 @@ function renderPlanner() {
   body.innerHTML = days.map(d => {
     const isPast = d < state.day;
     const isToday = d === state.day;
-    const isFuture = d > state.day;
     const stateLabel = isPast ? '✓ Geçmiş' : isToday ? '▶ Bugün' : '◦ Gelecek';
     const headerClass = isPast ? 'past' : isToday ? 'today' : 'future';
     const isOpen = openPlannerDays.has(d);
 
     const slotsHtml = TIMES.map((time, slotIdx) => {
       const key = `${d}-${slotIdx}`;
+      // Geçmiş: d < today, veya today && slotIdx < state.slot
+      const isStrictlyPast = isPast || (isToday && slotIdx < state.slot);
+      // Mevcut slot: isToday && slotIdx === state.slot
       const isCurrentSlot = isToday && slotIdx === state.slot;
-      const isPastSlot = isPast || (isToday && slotIdx < state.slot);
+      // Planlanabilir: mevcut slot dahil, gelecek slotlar
+      const isPlannable = isCurrentSlot || (!isStrictlyPast && !isPast) || (isToday && slotIdx >= state.slot);
 
-      // Geçmiş slot: ne yapıldı?
       let content = '';
       let slotClass = '';
-      if (isPastSlot) {
-        // dayActivities tüm günü tutmuyor, sadece bugünü; geçmiş günler için history yok
-        // Bugünkü geçmiş slotlarda dayActivities'dan tahmin: slot index eşleşmez, sadece yapılan listesi var
+      let clickable = false;
+
+      if (isStrictlyPast) {
+        // Geçmiş slot: gerçek aktiviteyi göster
+        const doneId = state.slotHistory[key];
+        const doneAct = doneId ? ACTIVITIES.find(a => a.id === doneId) : null;
         slotClass = 'planner-slot-done';
-        content = `<span class="planner-slot-done">✓ Tamamlandı</span>`;
+        content = doneAct
+          ? `<span class="planner-slot-done">${doneAct.icon} ${doneAct.name}</span>`
+          : `<span class="planner-slot-done">✓ Tamamlandı</span>`;
       } else if (isCurrentSlot) {
+        // Mevcut slot: plan varsa göster, tıklanabilir
+        const plannedId = plan[key];
+        const plannedAct = plannedId ? ACTIVITIES.find(a => a.id === plannedId) : null;
         slotClass = 'planner-slot-current';
-        content = `<span style="color:var(--pink-deep);font-weight:800">← Şu an burada</span>`;
+        if (plannedAct) {
+          content = `<span class="planner-slot-planned">▶ ${plannedAct.icon} ${plannedAct.name}</span>`;
+          slotClass += ' selected-plan';
+        } else {
+          content = `<span style="color:var(--pink-deep);font-weight:800">← Şu an</span>`;
+        }
+        clickable = true;
       } else {
-        // Gelecek slot: plan var mı?
+        // Gelecek slot
         const plannedId = plan[key];
         const plannedAct = plannedId ? ACTIVITIES.find(a => a.id === plannedId) : null;
         if (plannedAct) {
@@ -2441,14 +2622,15 @@ function renderPlanner() {
         } else {
           content = `<span class="planner-slot-empty">boş</span>`;
         }
+        clickable = true;
       }
 
       const isPickerOpen = pickerOpenSlot === key;
-      const pickerHtml = isPickerOpen ? buildActivityPicker(key) : '';
-      const selectableClass = (!isPastSlot && !isCurrentSlot) ? 'selectable' : '';
+      const pickerHtml = isPickerOpen ? buildActivityPicker(key, d, slotIdx) : '';
 
       return `
-        <div class="planner-slot-row ${slotClass} ${selectableClass}" ${(!isPastSlot && !isCurrentSlot) ? `onclick="toggleSlotPicker('${key}')"` : ''}>
+        <div class="planner-slot-row ${slotClass} ${clickable ? 'selectable' : ''}"
+             ${clickable ? `onclick="toggleSlotPicker('${key}')"` : ''}>
           <div class="planner-slot-time">${time}</div>
           <div class="planner-slot-content">${content}</div>
         </div>
@@ -2470,6 +2652,47 @@ function renderPlanner() {
   }).join('');
 }
 
+function buildActivityPicker(key, day, slotIdx) {
+  // Condition check: aktivite o gün/slotta geçerli mi?
+  // Simüle edilmiş state: gerçek state'i değiştirmeden sadece slot/day değiştirerek kontrol
+  const simState = { ...state, day, slot: slotIdx };
+
+  const chips = ACTIVITIES.map(act => {
+    const isChosen = plan[key] === act.id;
+    // Condition varsa o slot için kontrol et
+    const conditionOk = !act.condition || act.condition(simState);
+    // oncePerDay: o gün için plan'da başka bir slotta aynı aktivite var mı?
+    const alreadyPlannedToday = act.oncePerDay && Object.entries(plan).some(([k, id]) => {
+      if (k === key) return false; // Kendisi sayılmaz
+      const [kDay] = k.split('-');
+      return parseInt(kDay) === day && id === act.id;
+    });
+    // Gerçek oncePerDay: o gün zaten yapıldıysa (sadece bugün için geçerli)
+    const alreadyDoneToday = act.oncePerDay && day === state.day && state.dayActivities.includes(act.id);
+
+    const isDisabled = !conditionOk || alreadyPlannedToday || alreadyDoneToday;
+    const disabledReason = !conditionOk ? (act.conditionReason || 'Bu saatte mevcut değil')
+      : (alreadyPlannedToday || alreadyDoneToday) ? (act.blockedReason || 'Bu gün zaten planlandı')
+      : null;
+
+    const disabledAttr = isDisabled ? 'disabled-chip' : '';
+    const titleAttr = disabledReason ? `title="${disabledReason}"` : '';
+
+    return `<div class="planner-act-chip ${isChosen ? 'chosen' : ''} ${disabledAttr}"
+      ${titleAttr}
+      onclick="${isDisabled ? `showPlannerBlockToast('${disabledReason?.replace(/'/g,"\\'") || ''}')` : `selectPlanSlot('${key}','${act.id}',event)`}">
+      ${act.icon}<br><span style="font-size:0.65rem">${act.name}</span>
+    </div>`;
+  }).join('');
+
+  const clearChip = `<div class="planner-act-chip planner-act-clear" onclick="selectPlanSlot('${key}',null,event)">🗑️<br><span style="font-size:0.65rem">Temizle</span></div>`;
+  return `<div class="planner-act-picker">${chips}${clearChip}</div>`;
+}
+
+function showPlannerBlockToast(reason) {
+  showToast(reason || 'Bu aktivite bu slotta mevcut değil.');
+}
+
 function togglePlannerDay(d) {
   if (openPlannerDays.has(d)) {
     openPlannerDays.delete(d);
@@ -2479,37 +2702,41 @@ function togglePlannerDay(d) {
   renderPlanner();
 }
 
-function buildActivityPicker(key) {
-  const chips = ACTIVITIES.map(act => {
-    const isChosen = plan[key] === act.id;
-    return `<div class="planner-act-chip ${isChosen ? 'chosen' : ''}" onclick="selectPlanSlot('${key}','${act.id}',event)">${act.icon}<br><span style="font-size:0.65rem">${act.name}</span></div>`;
-  }).join('');
-  const clearChip = `<div class="planner-act-chip planner-act-clear" onclick="selectPlanSlot('${key}',null,event)">🗑️<br><span style="font-size:0.65rem">Temizle</span></div>`;
-  return `<div class="planner-act-picker">${chips}${clearChip}</div>`;
-}
-
 function toggleSlotPicker(key) {
   pickerOpenSlot = pickerOpenSlot === key ? null : key;
   renderPlanner();
 }
 
 function selectPlanSlot(key, actId, event) {
-  event.stopPropagation();
+  if (event) event.stopPropagation();
   if (actId === null) {
     delete plan[key];
   } else {
     plan[key] = actId;
   }
-  pickerOpenSlot = null;  // Picker'ı kapat seçimden sonra
+  pickerOpenSlot = null;
   renderPlanner();
 }
 
 function confirmPlan() {
   const count = Object.keys(plan).length;
   showToast(`${count} slot planlandı! ✅`);
-  // Planı kaydet — state'e yazabiliriz, oyun ilerleyince kullanılabilir
-  // Şimdilik görsel onay yeterli
   closePlanner();
+
+  // Mevcut slot için plan varsa hemen çalıştır
+  const currentKey = `${state.day}-${state.slot}`;
+  if (plan[currentKey]) {
+    const plannedAct = ACTIVITIES.find(a => a.id === plan[currentKey]);
+    if (plannedAct && isActivityAvailable(plannedAct)) {
+      delete plan[currentKey];
+      // Kısa gecikme sonra aktiviteyi yap
+      setTimeout(() => doActivity(plannedAct), 300);
+    } else if (plannedAct) {
+      const reason = getBlockReason(plannedAct);
+      delete plan[currentKey];
+      setTimeout(() => showToast(`Plan iptal: ${reason || 'Koşul sağlanamadı'} ❌`), 350);
+    }
+  }
 }
 
 // ============================================================
@@ -2672,6 +2899,7 @@ function startGame() {
     diary: [],
     usedOneTime: new Set(),
     dayActivities: [],
+    slotHistory: {},
     triggeredEvents: new Set(),
     randomEventSlots: {},
     mertPopupLastDay: -1,
