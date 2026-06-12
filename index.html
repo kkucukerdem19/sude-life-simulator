@@ -1290,7 +1290,7 @@ const ACTIVITIES = [
   // Sıra: okul, ders, altkatayin, facetime, bulus, arkadaslar, kahve, cips, theboys, pilates — en sonda uyu tek
   {
     id: 'okul',
-    name: 'Medipol'e Git',
+    name: "Medipol'e Git",
     icon: '🏫',
     description: "Derse katıl, hoca dinle.",
     baseEffects: { not: +1, enerji: -5, endise: -3 },
@@ -1299,7 +1299,7 @@ const ACTIVITIES = [
     imageEmoji: '🎓',
     bubbles: ['Olgu dersinde imza attım! ✏️','Verimli bir gün oldu! 📝','Derste uyurken yine fotoğrafımı çekmişler! 🤬.','Çok tatlı bir hocaydı! 😇'],
     oncePerDay: true,
-    blockedReason: 'Bugün zaten Medipol'e gittin! 🏫',
+    blockedReason: "Bugün zaten Medipol'e gittin! 🏫",
     condition: (state) => {
       const h = parseInt(TIMES[state.slot].split(':')[0]);
       return h >= 10 && h <= 16;
