@@ -1264,11 +1264,11 @@ const TIMES = ['10:00','12:00','14:00','16:00','18:00','20:00','22:00','00:00','
 const TOTAL_SLOTS = 9;
 
 const STATS_INITIAL = {
-  not: 70,
-  mutluluk: 70,
+  not: 80,
+  mutluluk: 80,
   iliski: 100,
   enerji: 80,
-  endise: 20
+  endise: 30
 };
 
 const STAT_LABELS = {
@@ -1744,9 +1744,9 @@ const DIARY_TEMPLATES = {
 const NOT_STUDY_SCALE = {
   // gün -> { chance: kazanım ihtimali (0-1), bonus: ekstra not }
   // Örnek: gün 1-3 = %50 ihtimalle +2 bonus; gün 8-10 = %20 ihtimalle +1 bonus
-  1: { chance: 0.50, bonus: 2 },
-  2: { chance: 0.50, bonus: 2 },
-  3: { chance: 0.45, bonus: 2 },
+  1: { chance: 0.50, bonus: 1 },
+  2: { chance: 0.50, bonus: 1 },
+  3: { chance: 0.45, bonus: 1 },
   4: { chance: 0.40, bonus: 1 },
   5: { chance: 0.35, bonus: 1 },
   6: { chance: 0.30, bonus: 1 },
@@ -2746,9 +2746,9 @@ function startFinal() {
   state.gameOver = true;
 
   // Boost stats for finale
-  state.stats.endise = Math.max(5, state.stats.endise - 20);
+  state.stats.endise = Math.max(0, state.stats.endise - 20);
   state.stats.mutluluk = Math.min(100, state.stats.mutluluk + 10);
-  state.stats.not = Math.min(100, state.stats.not + 5);
+  state.stats.not = Math.min(100, state.stats.not);
 
   showScreen('screen-final');
   triggerConfetti();
