@@ -1095,7 +1095,7 @@
 <!-- TITLE SCREEN -->
 <div id="screen-title" class="screen active">
   <div class="title-floats" id="title-floats"></div>
-  <span class="title-chibi">👩‍⚕️</span>
+  <span class="title-chibi">👩🏻‍⚕️</span>
   <h1 class="title-h1">Sude'nin<br>Sınav Öncesi<br>10 Günü</h1>
   <p class="title-sub">🌸 Cozy Life Simulator</p>
   <div class="title-story">
@@ -1219,13 +1219,13 @@
     <div class="gift-section" id="gift-section">
       <div id="gift-box-area">
         <div class="gift-box" id="gift-box" onclick="revealGift()">🎁</div>
-        <div class="gift-text">Sana bir sürprizim var! Tıkla! 🎀</div>
+        <div class="gift-text">Sana küçük bir sürprizim var! Tıkla! 🎀</div>
       </div>
       <div class="gift-revealed" id="gift-revealed">
         <div style="font-size:2.5rem">🎊</div>
         <div style="font-weight:800;color:var(--pink-deep);font-size:1rem">Sürpriz açıldı!</div>
-        <div style="font-size:0.85rem;color:var(--text-soft);margin-top:4px">Tatil başlıyor... ✈️</div>
-        <a href="https://workshop.example.com" class="btn-workshop" target="_blank">🌟 Workshop Linki</a>
+        <div style="font-size:0.85rem;color:var(--text-soft);margin-top:4px">Benimle de bir workshopa gelmek ister misin? </div>
+        <a href="https://goldenchef.com.tr/italyan-tatlilari-workshop/" class="btn-workshop" target="_blank">🌟 Workshop Linki</a>
       </div>
     </div>
 
@@ -1234,7 +1234,7 @@
       10 gün boyunca derslerini ihmal etmedin, 
       Mert'le güzel vakit geçirdin ve 
       enerjini korudun.<br><br>
-      <strong>Hayırlı tatiller! ❤️</strong>
+      <strong>Şimdi mutlu bir şekilde tatile çıkabilirsin! ❤️</strong>
     </div>
   </div>
 </div>
@@ -1294,7 +1294,7 @@ const ACTIVITIES = [
     icon: '🏫',
     description: "Ders dinledin.",
     baseEffects: { not: +1, enerji: -5, endise: -3 },
-    chibiState: 'study',
+    chibiState: 'school',
     colorClass: 'acc-blue',
     imageEmoji: '🎓',
     bubbles: ['Olgu dersinde imza attım! ✏️','Verimli bir gün oldu! 📝','Derste uyurken yine fotoğrafımı çekmişler! 🤬.','Çok tatlı bir hocaydı! 😇'],
@@ -1443,13 +1443,19 @@ const ACTIVITIES = [
 // Fotoğraflar images/ klasöründen yükleniyor.
 // Dosya yoksa otomatik olarak emoji fallback gösterilir.
 const CHIBI_STATES = {
-  default:   { img: 'images/sude_default.PNG',   emoji: '👩‍⚕️' },
+  default:   { img: 'images/sude_default.PNG',   emoji: '👩🏻‍⚕️' },
+  school:    { img: 'images/sude_school.png',     emoji: '👩‍💻' },  
   study:     { img: 'images/sude_study.png',     emoji: '👩‍💻' },
   sport:     { img: 'images/sude_sport.png',     emoji: '🏃‍♀️' },
   tired:     { img: 'images/sude_tired.png',     emoji: '😴'   },
   happy:     { img: 'images/sude_happy.png',     emoji: '😄'   },
   mert:      { img: 'images/sude_mert.png',      emoji: '🥰'   },
-  celebrate: { img: 'images/sude_celebrate.png', emoji: '🎉'   }
+  celebrate: { img: 'images/sude_celebrate.png', emoji: '🎉'   },
+  // Event state'leri — fotoğrafları images/ klasörüne ekleyince otomatik yüklenir
+  kedi:      { img: 'images/sude_cat.png',       emoji: '🐱'   },
+  iqos:      { img: 'images/sude_iqos.png',      emoji: '🚬'   },
+  yuz_bir:   { img: 'images/sude_101.png',       emoji: '🎲'   },
+  kopek:     { img: 'images/sude_dog.png',       emoji: '🐶'   }
 };
 
 // ---- CHIBI BUBBLES: gün bazlı dinamik idle mesajlar ----
@@ -1501,41 +1507,45 @@ const RANDOM_EVENTS_CONFIG = [
     title: '🎂 Doğum Günün Kutlu Olsun!',
     emoji: '🎉',
     body: "Bugün doğum günün! Mert çiçek gönderdi, arkadaşların sürpriz yaptı. Hayatının en güzel günlerinden biri! 🌹💐",
-    effects: { mutluluk: +25, endise: -10 },
+    effects: { mutluluk: +25, iliski: +10, endise: -5 },
     extraHtml: (ev) => `<div class="diary-entry-preview" style="margin-bottom:12px">"Doğum günün kutlu olsun güzelim! İyi ki varsın, seni seviyorum! ❤️🎂"</div>`,
     popupClass: 'birthday-popup',
     onTrigger: () => { triggerConfetti(); }
+    // chibiState/bubble/img yok → aktivitenin son hali korunur
   },
   {
     id: 'turkey1',
     type: 'fixed',
-    day: 1, slot: TOTAL_SLOTS - 1,   // Gün 1'in son slotu
+    day: 1, slot: TOTAL_SLOTS - 1,
     title: '🇹🇷 Türkiye Maçı!',
     emoji: '⚽',
-    body: 'Türkiye maçı oynuyor! Beraber izleyip bağırdınız, müthiş bir gol! Türkiye kazandı! 🎉🏆',
-    effects: { mutluluk: +15 },
+    body: "Sabah Türkiye'nin maçını izledin ve Türkiye kazandı! Mert ile izlediniz, çok keyifliydi! 🎉🏆",
+    effects: { mutluluk: +5 },
     popupClass: ''
   },
   {
     id: 'turkey2',
     type: 'fixed',
-    day: 8, slot: TOTAL_SLOTS - 1,   // Gün 8'in son slotu
+    day: 8, slot: TOTAL_SLOTS - 1,
     title: '🇹🇷 Türkiye Maçı!',
     emoji: '⚽',
-    body: 'Yine maç var! Gergin bir maçtı ama Türkiye kazandı! Stres atmak için birebir oldu. 🏆🎉',
-    effects: { mutluluk: +15 },
+    body: 'Yine maç vardı! Zor bir maçtı ama Türkiye kazandı! Böyle devam ederiz umarım! 🎉🏆',
+    effects: { mutluluk: +5 },
     popupClass: ''
   },
   // ---- RANDOM EVENTler ----
   {
     id: 'kedi',
     type: 'random',
-    minDay: 2, maxDay: 9,           // 2-9. günler arasında herhangi bir yerde
-    title: '🐱 Kampüste Kedi Sürprizi!',
+    minDay: 2, maxDay: 9,
+    title: '🐱 Yolda Kedi Sürprizi!',
     emoji: '🐱',
-    body: 'Fakülteye giderken minik bir kedi sana sürtündü! Bir süre sevildi, mırladı. Hayatın küçük güzellikleri... 🐾',
-    effects: { mutluluk: +10, endise: -5 },
-    popupClass: ''
+    body: 'Yolda yürürken minik bir kedi gördün! Mama ve su verip bir süre sevdin. 🐾😸',
+    effects: { mutluluk: +3, endise: -1 },
+    popupClass: '',
+    chibiState: 'kedi',
+    bubble: 'Yolda bir kedi sevdim, aşırı tatlıydı! 🐾😸'
+    // img: images/sude_cat.png
   },
   {
     id: 'ugurbocegi',
@@ -1543,9 +1553,10 @@ const RANDOM_EVENTS_CONFIG = [
     minDay: 2, maxDay: 9,
     title: '🐞 Uğur Böceği!',
     emoji: '🐞',
-    body: 'Pencerenin kenarına bir uğur böceği kondu! Uğurlu sayılır... Belki sınav da iyi geçer! 🍀✨',
-    effects: { mutluluk: +8, endise: -6 },
+    body: 'Pencerenin kenarına bir uğur böceği kondu! Demek ki sınavın iyi geçecek! 🍀',
+    effects: { mutluluk: +3, endise: -1 },
     popupClass: ''
+    // chibiState/bubble/img yok → son aktivite korunur
   },
   // 🚬 IQOS — günde 1-2 kez olsun: 2 ayrı random event instanceı, farklı günlere atanır
   {
@@ -1554,9 +1565,12 @@ const RANDOM_EVENTS_CONFIG = [
     minDay: 1, maxDay: 10,
     title: '🚬 IQOS Molası',
     emoji: '🚬',
-    body: 'Kısa bir IQOS molası verdirn. Nefes aldın, biraz düşündün. Stres biraz azaldı ama... sağlık?! 😬',
-    effects: { endise: -4, enerji: -2 },
-    popupClass: ''
+    body: 'Kısa bir IQOS molası verdin. Şimdi derse daha iyi odaklanabilirim! 😬',
+    effects: { mutluluk: +3, endise: -1 },
+    popupClass: '',
+    chibiState: 'iqos',
+    bubble: '"Terea almam lazım..." 🚬'
+    // img: images/sude_iqos.png
   },
   {
     id: 'iqos2',
@@ -1564,21 +1578,49 @@ const RANDOM_EVENTS_CONFIG = [
     minDay: 1, maxDay: 10,
     title: '🚬 Bir IQOS Daha...',
     emoji: '🚬',
-    body: 'İkinci IQOS... "Bu da son" dedin ama bilirsun artık. En azından biraz rahatlattı. 😅',
-    effects: { endise: -3, enerji: -2 },
-    popupClass: ''
+    body: 'Biraz fazla içiyorum ama sınav dönemi olur o kadar. 😅',
+    effects: { mutluluk: +3, endise: -1 },
+    popupClass: '',
+    chibiState: 'iqos',
+    bubble: 'Paketim bitti, ne yapacağım şimdi ben? 🚬'
+    // img: images/sude_iqos.png
+  },
+  {
+    id: 'yuz_bir',
+    type: 'random',
+    minDay: 1, maxDay: 10,
+    title: '🎲 101 Zamanı!',
+    emoji: '🎲',
+    body: "Arkadaşların 101 oynamaya çağırdı, sınavına rağmen 101'e hayır diyemedin! 😅",
+    effects: { mutluluk: +3, endise: -1 },
+    popupClass: '',
+    chibiState: 'yuz_bir',
+    bubble: 'Elden kafa attım, şanslı bir günümdeyim! 🎲'
+    // img: images/sude_101.png
+  },
+  {
+    id: 'kopek',
+    type: 'random',
+    minDay: 1, maxDay: 10,
+    title: '🐶 Sevimli Köpek!',
+    emoji: '🐶',
+    body: 'Yolda bir köpek sana doğru koştu, kuyruğunu sallayarak yanaştı. Biraz sevdim, tüm yol benimle yürüdü! 🐾💕',
+    effects: { mutluluk: +3, endise: -1 },
+    popupClass: '',
+    chibiState: 'kopek',
+    bubble: 'Bugünkü köpeği görünce Leo'yu daha çok özledim! 🐶💕'
+    // img: images/sude_dog.png
   }
   // 🆕 Yeni bir event eklemek için buraya aynı formatta bir obje ekle!
 ];
 
 const MERT_MESSAGES = [
-  { msg: "Bugün çok çalıştın ❤️" },
-  { msg: "Bir kahve molası? ☕" },
-  { msg: "Sana inanıyorum ✨" },
-  { msg: "Az kaldı, yapabilirsin! 🌟" },
-  { msg: "Seni çok seviyorum 💕" },
-  { msg: "Bu akşam konuşalım mı? 🌙" },
-  { msg: "Harikasin sen, bil bakalım 🥰" }
+  { msg: "Bugün çok çalıştın, birkaç gün daha böyle devam ediyoruz!" },
+  { msg: "Ben sınavı çok rahat geçeceğini biliyorum!" },
+  { msg: "Az kaldı, dayan sonra çok rahatlayacaksın!" },
+  { msg: "Seni çok seviyorum :)" },
+  { msg: "Ben seni çook özledim :)" },
+  { msg: "Sen ne tatlısın ya :)" }
 ];
 
 // Oyun başında random eventlere slot ata (çakışma olmadan)
@@ -1601,8 +1643,13 @@ function assignRandomEventSlots() {
     let attempts = 0;
     let assigned = false;
 
-    // iqos1 ve iqos2 aynı güne düşmesin
-    const sameGroupIds = ev.id.startsWith('iqos') ? ['iqos1','iqos2'] : null;
+    // Aynı gruptaki eventler aynı güne düşmesin
+    // iqos1/iqos2 birbirine; kedi/köpek/uğurböceği de birbirine çakışmasın
+    const iqosGroup = ['iqos1','iqos2'];
+    const animalGroup = ['kedi','kopek','ugurbocegi'];
+    const sameGroupIds = ev.id.startsWith('iqos') ? iqosGroup
+      : animalGroup.includes(ev.id) ? animalGroup
+      : null;
 
     while (attempts < 100 && !assigned) {
       const minDay = ev.minDay || 1;
@@ -1654,6 +1701,11 @@ function processEventQueue() {
 
   if (ev.onTrigger) ev.onTrigger();
   applyEffects(ev.effects || {});
+
+  // Event'e özel chibi/bubble varsa uygula; yoksa son aktivite hali korunur
+  if (ev.chibiState || ev.bubble) {
+    updateChibi(ev.chibiState || 'default', ev.bubble || null);
+  }
 
   const extraHtml = ev.extraHtml ? ev.extraHtml(ev) : null;
   showGenericPopup(
@@ -2222,6 +2274,7 @@ function autoPlayAllSlots(n) {
     const ev = slotEvents[0];
     if (ev.onTrigger) ev.onTrigger();
     applyEffects(ev.effects || {});
+    if (ev.chibiState || ev.bubble) updateChibi(ev.chibiState || 'default', ev.bubble || null);
     showGenericPopup(
       ev.emoji, ev.title, ev.body, ev.effects,
       ev.extraHtml ? ev.extraHtml(ev) : null,
@@ -2304,6 +2357,7 @@ function autoPlaySlots(n, cb) {
     const ev = slotEvents[0]; // Birden fazlaysa ilkini göster
     if (ev.onTrigger) ev.onTrigger();
     applyEffects(ev.effects || {});
+    if (ev.chibiState || ev.bubble) updateChibi(ev.chibiState || 'default', ev.bubble || null);
     showGenericPopup(
       ev.emoji, ev.title, ev.body, ev.effects,
       ev.extraHtml ? ev.extraHtml(ev) : null,
