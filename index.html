@@ -892,7 +892,21 @@
     line-height: 1.7;
   }
   .final-message strong { color: var(--pink-deep); }
-
+  .btn-final-diary {
+    width: 100%;
+    background: white;
+    border: 2px solid var(--pink);
+    border-radius: 50px;
+    padding: 14px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    color: var(--pink-deep);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-bottom: 4px;
+  }
+  .btn-final-diary:hover { background: var(--pink-light); transform: translateY(-1px); }
   /* ---- CONFETTI ---- */
   .confetti-wrap {
     position: fixed; inset: 0; pointer-events: none; z-index: 400; overflow: hidden;
@@ -1215,7 +1229,7 @@
       <h3>📊 Final Raporu</h3>
       <!-- Filled by JS -->
     </div>
-
+    <button class="btn-final-diary" onclick="showFinalDiary()">📓 Günlüğünü Gör</button>
     <div class="gift-section" id="gift-section">
       <div id="gift-box-area">
         <div class="gift-box" id="gift-box" onclick="revealGift()">🎁</div>
@@ -2433,9 +2447,7 @@ function generateDiaryEntry() {
 // DIARY SCREEN
 // ============================================================
 function showDiary() {
-  document.getElementById('screen-game').classList.remove('active');
-  document.getElementById('screen-diary').classList.add('active');
-  renderDiaryEntries();
+  showDiaryFrom('screen-game');
 }
 
 function renderDiaryEntries() {
@@ -2487,9 +2499,7 @@ function renderDiaryEntries() {
   }).join('');
 
   // Bugünkü günün manuel not input alanı (sadece aktif günde göster)
-  const todayEntry = state.diary.find(d => d.day === state.day);
-  const hasToday = !!todayEntry;
-  const addNoteHtml = `
+  const addNoteHtml = diaryReturnScreen === 'screen-final' ? '' : `
     <div class="diary-add-note-area">
       <div class="diary-add-label">✏️ Bugüne not ekle (Gün ${state.day})</div>
       <textarea class="diary-textarea" id="diary-input" placeholder="Bugün aklında ne var?..."></textarea>
@@ -2528,9 +2538,23 @@ function escapeHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+let diaryReturnScreen = 'screen-game'; // Günlükten çıkınca hangi ekrana dönülecek
+
+function showDiaryFrom(returnScreen) {
+  diaryReturnScreen = returnScreen;
+  document.getElementById(returnScreen).classList.remove('active');
+  document.getElementById('screen-diary').classList.add('active');
+  renderDiaryEntries();
+}
+
+function showFinalDiary() {
+  showDiaryFrom('screen-final');
+}
+
 function closeDiary() {
   document.getElementById('screen-diary').classList.remove('active');
-  document.getElementById('screen-game').classList.add('active');
+  document.getElementById(diaryReturnScreen).classList.add('active');
+  diaryReturnScreen = 'screen-game'; // reset
 }
 
 // ============================================================
